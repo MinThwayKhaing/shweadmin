@@ -1,0 +1,115 @@
+<template>
+  <div class="login-container">
+    <h2 class="title">Login</h2>
+    <form @submit.prevent="handleLogin">
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" v-model="phoneNumber" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required />
+      </div>
+      <button type="submit">Login</button>
+      <p v-if="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</template>
+
+<script>
+import { login } from '../../services/loginService'
+
+export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Login',
+  data() {
+    return {
+      phoneNumber: '',
+      password: '',
+      errorMessage: ''
+    }
+  },
+  methods: {
+    async handleLogin() {
+      try {
+        const data = await login(this.phoneNumber, this.password)
+        console.log('Login successful:', data)
+        sessionStorage.setItem('authToken', data.token)
+        sessionStorage.setItem('refreshToken', data.refreshToken)
+        sessionStorage.setItem('user', JSON.stringify(data.user))
+        this.$router.push({ name: 'home' })
+      } catch (error) {
+        this.errorMessage = error
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+body {
+  background-color: #1e1e1e; /* Dark background for entire body */
+  color: #ffffff; /* White text color for body */
+  font-family: 'Arial', sans-serif;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 30px;
+  border: 2px solid #d4af37; /* Gold border */
+  border-radius: 10px;
+  background-color: #2b2b2b; /* Slightly lighter dark background for contrast */
+  color: #ffffff;
+  text-align: center;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #d4af37; /* Gold color for title */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #d4af37; /* Gold color for labels */
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #d4af37; /* Gold border */
+  background-color: #333333; /* Dark input background */
+  color: #ffffff;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #d4af37; /* Gold button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #b3862b; /* Darker gold for hover */
+}
+
+p {
+  color: #ff4d4f;
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
