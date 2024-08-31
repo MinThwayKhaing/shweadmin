@@ -5,9 +5,29 @@
 
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="success" class="success">{{ success }}</div>
 
     <div v-if="translator" class="details-form">
       <form @submit.prevent="updateTranslator">
+        <!-- Image Display -->
+        <div class="form-group">
+          <label>Image Preview:</label>
+          <img
+            :src="
+              imagePreview ||
+              translator.image ||
+              'https://natbounappspaces.blr1.digitaloceanspaces.com/1724150882304_image.webp'
+            "
+            alt="Translator Image"
+            class="translator-image"
+          />
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label>Upload New Image:</label>
+          <input type="file" @change="handleImageUpload" />
+        </div>
         <div class="form-group">
           <label>Name:</label>
           <input v-model="translator.name" type="text" required />
@@ -19,12 +39,6 @@
         <div class="form-group">
           <label>Specialist:</label>
           <input v-model="translator.specialist" type="text" required />
-        </div>
-
-        <!-- Image Upload -->
-        <div class="form-group">
-          <label>Upload Image:</label>
-          <input type="file" @change="handleImageUpload" required />
         </div>
 
         <button type="submit">Update Translator</button>
@@ -41,8 +55,10 @@ export default {
     return {
       translator: null,
       image: null, // To hold the uploaded image
+      imagePreview: null, // To hold the image preview URL
       loading: false,
-      error: null
+      error: null,
+      success: null // To hold the success message
     }
   },
   created() {
@@ -64,21 +80,35 @@ export default {
       }
     },
     handleImageUpload(event) {
-      this.image = event.target.files[0]
+      const file = event.target.files[0]
+      this.image = file
+      this.imagePreview = URL.createObjectURL(file)
     },
     async updateTranslator() {
       const { id } = this.$route.params
       this.loading = true
       this.error = null
+      this.success = null
 
       try {
         const formData = new FormData()
         formData.append('image', this.image)
-        formData.append('request', JSON.stringify(this.translator))
+        formData.append(
+          'request',
+          new Blob([JSON.stringify(this.translator)], { type: 'application/json' })
+        )
 
-        await updateTranslator(id, formData)
-        this.$router.push({ name: 'translator-list' })
+        const response = await updateTranslator(id, formData)
+
+        // Check the response status
+        if (response.status === 200) {
+          this.success = response.data // Show success message
+          this.$router.push({ name: 'translators-list' }) // Correct route name
+        } else {
+          this.error = response.data // Show the error message returned from backend
+        }
       } catch (err) {
+        console.log('error:', err)
         this.error = 'Failed to update translator details.'
       } finally {
         this.loading = false
@@ -112,6 +142,14 @@ export default {
   box-sizing: border-box;
 }
 
+.translator-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
 .loading {
   text-align: center;
   font-weight: bold;
@@ -119,6 +157,12 @@ export default {
 
 .error {
   color: red;
+  text-align: center;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
   text-align: center;
   font-weight: bold;
 }

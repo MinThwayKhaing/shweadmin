@@ -1,13 +1,18 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-  <nav class="sidebar-nav">
-    <div class="user-info">
+  <nav class="sidebar-nav" :class="{ collapsed: isCollapsed }">
+    <button class="close-button" @click="toggleSidebar">
+      <span v-if="!isCollapsed">×</span>
+      <span v-else>☰</span>
+    </button>
+    <div v-if="!isCollapsed" class="user-info">
       <img :src="userImage" alt="User Image" class="user-image" v-if="userImage" />
       <div class="user-details">
         <h4>{{ userName }}</h4>
         <p>{{ userEmail }}</p>
       </div>
     </div>
-    <div v-for="(item, index) in navItems" :key="index" class="nav-item">
+    <div v-if="!isCollapsed" v-for="(item, index) in navItems" :key="index" class="nav-item">
       <div @click="toggleSubNav(index)" class="main-nav">
         <span :class="item.icon"></span> {{ item.title }}
       </div>
@@ -23,7 +28,7 @@
         </router-link>
       </div>
     </div>
-    <div class="settings">
+    <div v-if="!isCollapsed" class="settings">
       <router-link to="/settings"> <span class="icon-settings"></span> Settings </router-link>
     </div>
   </nav>
@@ -37,6 +42,7 @@ export default {
       userEmail: '',
       userImage: '',
       activeMainNav: null,
+      isCollapsed: false, // State to manage sidebar collapse
       navItems: [
         {
           title: 'Translators',
@@ -100,9 +106,6 @@ export default {
     toggleSubNav(index) {
       this.activeMainNav = this.activeMainNav === index ? null : index
     },
-    setActive(route) {
-      this.activeRoute = route
-    },
     isActive(route) {
       return this.activeRoute === route
     },
@@ -113,6 +116,9 @@ export default {
         this.userEmail = user.phoneNumber
         this.userImage = user.image || '' // Assuming 'image' is the URL or base64 string
       }
+    },
+    toggleSidebar() {
+      this.isCollapsed = !this.isCollapsed
     }
   }
 }
@@ -126,6 +132,20 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: width 0.3s ease;
+}
+
+.sidebar-nav.collapsed {
+  width: 60px; /* Adjust as needed */
+}
+
+.close-button {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .user-info {

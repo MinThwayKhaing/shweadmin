@@ -1,25 +1,24 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <MainLayout />
+  <!-- Use the layout component here -->
 </template>
 
 <script>
+import MainLayout from './components/MainLayout.vue' // Ensure the path is correct
+
 export default {
-  name: 'App'
+  components: {
+    MainLayout
+  }
 }
 </script>
 
 <style>
 body {
   height: 100vh;
-  margin: 0px;
+  margin: 0;
 }
 #app {
-  height: 100%;
-}
-
-#app > div {
   height: 100%;
 }
 </style>

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../pages/login.vue'
 import Home from '../pages/home.vue'
-import TranslatorsCreate from '../pages/translators/Create.vue'
+import TranslatorsCreate from '../pages/translators/create.vue'
 import TranslatorsList from '../pages/translators/List.vue'
 import ViewDetails from '../pages/translators/viewdetails.vue'
 import visaExtensionTypeCreate from '@/pages/visa-extension-type/visa-extension-type-create.vue'
