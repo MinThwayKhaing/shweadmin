@@ -61,6 +61,33 @@ export default {
             { title: 'Create', route: '/visa/create' },
             { title: 'List', route: '/visa/list' }
           ]
+        },
+        {
+          title: 'Visa Extension Type',
+          icon: 'icon-visa-extension-type',
+          subNav: [
+            { title: 'Create', route: '/visa-extension-type/create' },
+            { title: 'List', route: '/visa-extension-type/list' },
+
+          ]
+        },
+        {
+          title: 'Embassy Visa Type',
+          icon: 'icon-embassy-letter-type',
+          subNav: [
+            { title: 'Create', route: '/embassy-letter-type/create' },
+            { title: 'List', route: '/embassy-letter-type/list' },
+
+          ]
+        },
+        {
+          title: '90 Day Report Visa Type',
+          icon: 'icon-embassy-letter-type',
+          subNav: [
+            { title: 'Create', route: '/Report90day-visa-type/create' },
+            { title: 'List', route: '/Report90day-visa-type/list' },
+
+          ]
         }
       ],
       activeRoute: ''
