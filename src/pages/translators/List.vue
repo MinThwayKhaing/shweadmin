@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="translators-list">
+    <SidebarNav />
     <h1>Translators List</h1>
 
     <!-- Search Box -->
@@ -39,7 +40,6 @@
           <td>{{ translator.specialist }}</td>
           <td>
             <button @click="viewDetails(translator.id)">View Details</button>
-            <!-- <button @click="updateTranslator(translator.id)">Update</button> -->
             <button @click="deleteTranslator(translator.id)">Delete</button>
           </td>
         </tr>
@@ -84,15 +84,16 @@ export default {
     viewDetails(translatorId) {
       this.$router.push({ name: 'translator-details', params: { id: translatorId } })
     },
-    updateTranslator(translatorId) {
-      this.$router.push({ name: 'translator-update', params: { id: translatorId } })
-    },
     async deleteTranslator(translatorId) {
-      try {
-        await deleteTranslator(translatorId)
-        this.loadTranslators() // Refresh the list after deletion
-      } catch (err) {
-        this.error = err.message
+      const confirmed = confirm('Do you want to delete this data?')
+      if (confirmed) {
+        try {
+          const response = await deleteTranslator(translatorId)
+          alert(response) // Show backend response in an alert box
+          this.loadTranslators() // Refresh the list after deletion
+        } catch (err) {
+          alert(err.message) // Show the error message in an alert box
+        }
       }
     }
   }
