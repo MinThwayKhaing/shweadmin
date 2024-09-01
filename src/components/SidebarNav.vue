@@ -29,7 +29,7 @@
       </div>
     </div>
     <div v-if="!isCollapsed" class="settings">
-      <router-link to="/settings"> <span class="icon-settings"></span> Settings </router-link>
+      <!-- ? <router-link to="/settings"> <span class="icon-settings"></span> Settings </router-link> -->
     </div>
   </nav>
 </template>
@@ -56,8 +56,8 @@ export default {
           title: 'Car',
           icon: 'icon-car',
           subNav: [
-            { title: 'Create', route: '/car/create' },
-            { title: 'List', route: '/car/list' }
+            { title: 'Create', route: '/carrent/create' },
+            { title: 'List', route: '/carrent/list' }
           ]
         },
         {
