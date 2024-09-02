@@ -1,13 +1,13 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="translators-list">
-    <h1>Translators List</h1>
+  <div class="car-rent-list">
+    <h1>CarRent List</h1>
 
     <!-- Search Box -->
     <input
       v-model="searchString"
-      placeholder="Search translators..."
-      @input="loadTranslators"
+      placeholder="Search Cars..."
+      @input="loadCarRent"
       class="search-box"
     />
 
@@ -15,11 +15,11 @@
     <div class="pagination-controls">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadTranslators" />
+        <input type="number" v-model.number="page" @change="loadCarRent" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadTranslators" />
+        <input type="number" v-model.number="size" @change="loadCarRent" />
       </label>
     </div>
 

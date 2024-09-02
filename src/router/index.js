@@ -17,14 +17,15 @@ import EmbassyLetterTypeList from '@/pages/embassy-letter-type/embassy-letter-ty
 import createReport90DayVisaType from '@/pages/Report90day-visa-type/createReport90DayVisaType.vue'
 import editReport90DayVisaType from '@/pages/Report90day-visa-type/editReport90DayVisaType.vue'
 import listReport90DayVisaType from '@/pages/Report90day-visa-type/listReport90DayVisaType.vue'
-
+import tm30businesslist from '@/pages/tm30-business-function/List.vue'
+import tm30businessdetail from '@/pages/tm30-business-function/Detail.vue'
 const routes = [
   { path: '/', name: 'login', component: Login },
   { path: '/home', name: 'home', component: Home },
   { path: '/translators/create', name: 'translators-create', component: TranslatorsCreate },
   { path: '/translators/list', name: 'translators-list', component: TranslatorsList },
   { path: '/translator/:id/details', name: 'translator-details', component: ViewDetails },
-  { path: '/carrent/list', name: 'car-rent-details', component: CarRentList },
+  { path: '/carrent/list', name: 'car-rent-list', component: CarRentList },
   { path: '/carrent/create', name: 'car-rent-create', component: CarRentCreate },
   { path: '/carrent/:id/details', name: 'car-details', component: CarViewDetails },
   {
@@ -71,7 +72,13 @@ const routes = [
     path: '/Report90day-visa-type/edit',
     name: 'editReport90DayVisaType',
     component: editReport90DayVisaType
-  }
+  },
+  {
+    path: '/tm30businesslist',
+    name: 'tm30-business-list',
+    component: tm30businesslist
+  },
+  { path: '/tm30business/:id/detail', name: 'tm30-business-details', component: tm30businessdetail }
 ]
 
 const router = createRouter({

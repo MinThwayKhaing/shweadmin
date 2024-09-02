@@ -1,7 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="home">
-    <SidebarNav />
     <div class="home-content">
       <header class="home-header">
         <h1>Hello, {{ userName }}!</h1>
@@ -22,12 +21,7 @@
 </template>
 
 <script>
-import SidebarNav from '@/components/SidebarNav.vue'
-
 export default {
-  components: {
-    SidebarNav
-  },
   data() {
     return {
       userName: 'Faiqoh Brilanti',

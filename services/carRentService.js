@@ -35,7 +35,7 @@ export async function fetchCarRent(searchString, page, size) {
   }
 }
 
-export async function saveTranslator(formData) {
+export async function saveCarRent(formData) {
   try {
     const token = sessionStorage.getItem('authToken')
 
@@ -44,7 +44,7 @@ export async function saveTranslator(formData) {
       throw new Error('Authentication token is missing. Please log in.')
     }
 
-    const response = await axios.post(`${config.baseurl}translator/CarRentave`, formData, {
+    const response = await axios.post(`${config.baseurl}carRent/carRentSave`, formData, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -53,7 +53,7 @@ export async function saveTranslator(formData) {
     // Return the response data from the backend
     return response
   } catch (err) {
-    console.error('Failed to create translator:', err)
+    console.error('Failed to create CarRent:', err)
 
     // Check if the error is due to authentication
     if (err.response && err.response.status === 401) {
@@ -61,7 +61,7 @@ export async function saveTranslator(formData) {
     }
 
     // Throw a general error if it's a different issue
-    throw new Error('Failed to create translator')
+    throw new Error('Failed to create CarRent')
   }
 }
 
@@ -104,9 +104,9 @@ export async function getCarById(id) {
   })
 }
 
-export async function updateTranslator(id, formData) {
+export async function updateCarRent(id, formData) {
   const token = sessionStorage.getItem('authToken')
-  return axios.put(`${config.baseurl}translator/updateTranslator/${id}`, formData, {
+  return axios.put(`${config.baseurl}carRent/updateCarRent/${id}`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
       // No need to set 'Content-Type' manually; let the browser set it
