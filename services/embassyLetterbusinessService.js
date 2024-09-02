@@ -1,14 +1,14 @@
 import axios from 'axios'
 import config from '../config.json' // Ensure the path is correct based on your project structure
 
-export async function fetchTM30Business(searchString, page, size, status) {
+export async function fetchEmbassyLetter(searchString, page, size, status) {
   try {
     const token = sessionStorage.getItem('authToken')
     if (!token) {
       throw new Error('Authentication token is missing. Please log in.')
     }
 
-    const response = await axios.get(`${config.baseurl}tm30/getAllTm30`, {
+    const response = await axios.get(`${config.baseurl}embassy-letter/getAllEmbassyVisaOrder`, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -32,7 +32,7 @@ export async function fetchTM30Business(searchString, page, size, status) {
   }
 }
 
-export async function updateTM30Business(id, newStatus) {
+export async function updateEmbassyLetter(id, newStatus) {
   try {
     const token = sessionStorage.getItem('authToken')
     if (!token) {
@@ -43,11 +43,11 @@ export async function updateTM30Business(id, newStatus) {
 
     // Determine which API endpoint to call based on the status
     if (newStatus === 'Cancel_Order') {
-      endpoint = `tm30/cancelOrder/${id}`
+      endpoint = `embassy-letter/cancelOrder/${id}`
     } else if (newStatus === 'ON_PROGRESS') {
-      endpoint = `tm30/onProgress/${id}`
+      endpoint = `embassy/onProgress/${id}`
     } else if (newStatus === 'COMPLETED') {
-      endpoint = `tm30/completed/${id}`
+      endpoint = `embassy/completed/${id}`
     } else {
       throw new Error('Invalid status')
     }

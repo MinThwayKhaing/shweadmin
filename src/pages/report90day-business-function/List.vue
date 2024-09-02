@@ -31,7 +31,7 @@
         </label>
         <label>
           Page Size:
-          <input type="number" v-model.number="size" @change="loadTm30" />
+          <input type="number" v-model.number="size" @change="loadReport90Day" />
         </label>
       </div>
   
@@ -45,12 +45,14 @@
             <th>VisaType</th>
             <th>ContactNumber</th>
             <th>UserName</th>
-            <th>Status</th>  
+            <th>Status</th>
+            <th>ChangeStatus</th>  
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(report90Day,index) in report90Days" :key="index">
+          <tr v-for="report90Day in report90Days" :key="report90Day.order_id">
             <!-- <td>{{ report90Day.syskey}}</td> -->
+            <td>{{ report90Day.order_id }}</td>
             <td>{{ report90Day.createdDate}}</td>
             <td>{{ report90Day.passportBio}}</td>
             <td>{{ report90Day.visaPage }}</td>
@@ -60,9 +62,9 @@
             <td>{{ report90Day.status }}</td>
   
             <td>
-              <button @click="updateStatus(report90Day.id, 'Cancel_Order')">Cancel</button>
-              <button @click="updateStatus(report90Day.id, 'ON_PROGRESS')">On Progress</button>
-              <button @click="updateStatus(report90Day.id, 'COMPLETED')">Completed</button>
+              <button @click="updateStatus(report90Day.order_id, 'Cancel_Order')">Cancel</button>
+              <button @click="updateStatus(report90Day.order_id, 'ON_PROGRESS')">On Progress</button>
+              <button @click="updateStatus(report90Day.order_id, 'COMPLETED')">Completed</button>
             </td>
           </tr>
         </tbody>
@@ -105,7 +107,7 @@
   
         try {
           // Fetch only the car rents that match the active status
-          this.report90Day = await fetch90DayReportBusiness(
+          this.report90Days = await fetch90DayReportBusiness(
             this.searchString,
             this.page,
             this.size,
@@ -126,7 +128,7 @@
         try {
           await update90DayReportBusiness(id, newStatus)
           alert(`Status updated to ${newStatus} successfully.`)
-          this.loadTm30() // Reload the list after the update
+          this.loadReport90Day() // Reload the list after the update
         } catch (err) {
           alert(`Failed to update status: ${err.message}`)
         }

@@ -23,7 +23,7 @@ import report90daybusinesslist from '@/pages/report90day-business-function/List.
 import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue';
 
 const routes = [
-  { path: '/', name: 'login', component: Login },
+  { path: '/', name: 'login', component: Login, meta: {hideSidebar: true} },
   { path: '/home', name: 'home', component: Home },
   { path: '/translators/create', name: 'translators-create', component: TranslatorsCreate },
   { path: '/translators/list', name: 'translators-list', component: TranslatorsList },

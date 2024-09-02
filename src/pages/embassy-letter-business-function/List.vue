@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="tm30-business-list">
-    <h1>Embassy Letter Business List</h1>
+    <h1>Embassy Letters Business List</h1>
 
     <!-- Status Filter Navbar -->
     <div class="status-navbar">
@@ -19,7 +19,7 @@
     <input
       v-model="searchString"
       placeholder="Search Cars..."
-      @input="loadEmbassyLetter"
+      @input="loadTm30"
       class="search-box"
     />
 
@@ -27,11 +27,11 @@
     <div class="pagination-controls">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadEmbassyLetter" />
+        <input type="number" v-model.number="page" @change="loadTm30" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadEmbassyLetter" />
+        <input type="number" v-model.number="size" @change="loadTm30" />
       </label>
     </div>
 
@@ -40,31 +40,29 @@
         <tr>
           <th>Order Id</th>
           <th>CreatedDate</th>
-
+          <th>Visa Type</th>
           <th>PassportBio</th>
           <th>VisaPage</th>
-          <th>Duration</th>
           <th>ContactNumber</th>
-          <th>Status</th>
           <th>UserName</th>
-          <th>Change Status</th>
+          <th>Status</th>
+          <th>ChangeStatus</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="tm30 in tm30s" :key="tm30.id">
-          <td>{{ tm30.syskey }}</td>
-          <td>{{ tm30.createdDate }}</td>
-          <td>{{ tm30.passportBio }}</td>
-          <td>{{ tm30.visaPage }}</td>
-          <td>{{ tm30.duration }}</td>
-          <td>{{ tm30.contactNumber }}</td>
-          <td>{{ tm30.status }}</td>
-          <td>{{ tm30.userName }}</td>
-
+        <tr v-for="embassyLetter in embassyLetters" :key="embassyLetter.order_id">
+          <td>{{ embassyLetter.order_id }}</td>
+          <td>{{ embassyLetter.createdDate }}</td>
+          <td>{{ embassyLetter.visaType }}</td>
+          <td>{{ embassyLetter.passportBio }}</td>
+          <td>{{ embassyLetter.visaPage}}</td>
+          <td>{{ embassyLetter.contactNumber }}</td>
+          <td>{{ embassyLetter.userName }}</td>
+          <td>{{ embassyLetter.status}}</td>
           <td>
-            <button @click="updateStatus(tm30.id, 'Cancel_Order')">Cancel</button>
-            <button @click="updateStatus(tm30.id, 'ON_PROGRESS')">On Progress</button>
-            <button @click="updateStatus(tm30.id, 'COMPLETED')">Completed</button>
+            <button @click="updateStatus(embassyLetter.order_id, 'Cancel_Order')">Cancel</button>
+            <button @click="updateStatus(embassyLetter.order_id, 'ON_PROGRESS')">On Progress</button>
+            <button @click="updateStatus(embassyLetter.order_id, 'COMPLETED')">Completed</button>
           </td>
         </tr>
       </tbody>
@@ -76,12 +74,12 @@
 </template>
 
 <script>
-import { fetchTM30Business, updateTM30Business } from '../../../services/tm30businessService'
+import { fetchEmbassyLetter, updateEmbassyLetter } from '../../../services/embassyLetterbusinessService.js'
 
 export default {
   data() {
     return {
-      tm30s: [],
+      embassyLetters: [],
       searchString: '', // Initialize the search string
       page: 1, // Current page
       size: 10, // Page size
@@ -98,16 +96,16 @@ export default {
     }
   },
   created() {
-    this.loadTm30()
+    this.loadEmbassyLetter()
   },
   methods: {
-    async loadTm30() {
+    async loadEmbassyLetter() {
       this.loading = true
       this.error = null
 
       try {
         // Fetch only the car rents that match the active status
-        this.tm30s = await fetchTM30Business(
+        this.embassyLetters = await fetchEmbassyLetter(
           this.searchString,
           this.page,
           this.size,
@@ -126,9 +124,9 @@ export default {
     },
     async updateStatus(id, newStatus) {
       try {
-        await updateTM30Business(id, newStatus)
+        await updateEmbassyLetter(id, newStatus)
         alert(`Status updated to ${newStatus} successfully.`)
-        this.loadTm30() // Reload the list after the update
+        this.loadEmbassyLetter() // Reload the list after the update
       } catch (err) {
         alert(`Failed to update status: ${err.message}`)
       }

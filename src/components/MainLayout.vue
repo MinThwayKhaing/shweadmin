@@ -1,6 +1,6 @@
 <template>
   <div :class="['main-layout', { collapsed: isCollapsed }]">
-    <SidebarNav @toggle="handleToggle" />
+    <SidebarNav v-if="isAuthenticated && !isLoginPage" @toggle="handleToggle" />
     <!-- Include the sidebar navigation -->
     <div class="content">
       <router-view />
@@ -15,17 +15,35 @@ import SidebarNav from './SidebarNav.vue' // Ensure the path is correct
 export default {
   data() {
     return {
-      isCollapsed: false
+      isCollapsed: false,
+      isAuthenticated: false,
+      isLoginPage: false
     }
   },
   components: {
     SidebarNav
   },
+  
   methods: {
     handleToggle() {
       this.isCollapsed = !this.isCollapsed
+    },
+
+    checkAuthStatus() {
+      this.isAuthenticated = !!sessionStorage.getItem('authToken')
+    },
+
+    checkIfLoginPage() {
+      this.isLoginPage = this.$route.name === 'login'
     }
-  }
+  },
+
+  watch: {
+    '$route'() {
+      this.checkAuthStatus() // Recheck authentication status on route change
+      this.checkIfLoginPage() // Check if the route is the login page
+    }
+  },
 }
 </script>
 
