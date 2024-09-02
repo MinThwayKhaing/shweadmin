@@ -9,8 +9,8 @@ import CarRentCreate from '../pages/carRent/create.vue'
 import CarViewDetails from '../pages/carRent/viewdetails.vue'
 // Import other components for Car and Visa Services
 import visaExtensionTypeCreate from '@/pages/visa-extension-type/visa-extension-type-create.vue'
+import visaExtensionTypeEdit from '@/pages/visa-extension-type/visa-extension-type-edit.vue'
 import visaExtensionTypeList from '@/pages/visa-extension-type/visa-extension-type-list.vue'
-import VisaExtensionTypeEdit from '@/pages/visa-extension-type/visa-extension-type-edit.vue'
 import EmbassyLetterTypeCreate from '@/pages/embassy-letter-type/embassy-letter-type-create.vue'
 import EmbassyLetterTypeEdit from '@/pages/embassy-letter-type/embassy-letter-type-edit.vue'
 import EmbassyLetterTypeList from '@/pages/embassy-letter-type/embassy-letter-type-list.vue'
@@ -19,6 +19,11 @@ import editReport90DayVisaType from '@/pages/Report90day-visa-type/editReport90D
 import listReport90DayVisaType from '@/pages/Report90day-visa-type/listReport90DayVisaType.vue'
 import tm30businesslist from '@/pages/tm30-business-function/List.vue'
 import tm30businessdetail from '@/pages/tm30-business-function/Detail.vue'
+import newsCreate from '@/pages/news/newsCreate.vue'
+import newsEdit from '@/pages/news/newsEdit.vue'
+import newsList from '@/pages/news/newsList.vue'
+
+
 import report90daybusinesslist from '@/pages/report90day-business-function/List.vue'
 import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue';
 
@@ -44,7 +49,7 @@ const routes = [
   {
     path: '/visa-extension-type/edit',
     name: 'visa-extension-type-edit',
-    component: VisaExtensionTypeEdit
+    component: visaExtensionTypeEdit
   },
   {
     path: '/embassy-letter-type/create',
@@ -82,17 +87,20 @@ const routes = [
     component: tm30businesslist
   },
   { path: '/tm30business/:id/detail', name: 'tm30-business-details', component: tm30businessdetail },
-
-  { 
-    path: '/report90daybusinesslist',
-    name: 'report90day-business-list',
-    component: report90daybusinesslist
-  },
-
   {
-    path: '/embassyletterbusinesslist',
-    name: 'embassyletter-business-list',
-    component: embassyletterbusinesslist
+    path: '/news/create',
+    name: 'newsCreate',
+    component: newsCreate
+  },
+  {
+    path: '/news/edit',
+    name: 'newsEdit',
+    component: newsEdit
+  },
+  {
+    path: '/news/list',
+    name: 'newsList',
+    component: newsList
   }
 ]
 

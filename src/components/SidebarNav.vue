@@ -75,6 +75,15 @@ export default {
               ]
             },
             {
+          title: 'News',
+          icon: 'icon-news',
+          subNav: [
+            { title: 'Create', route: '/news/create' },
+            { title: 'List', route: '/news/list' },
+
+          ]
+        },
+            {
               title: 'Visa Services',
               icon: 'icon-visa',
               subNav: [
@@ -138,6 +147,7 @@ export default {
             }
           ]
         }
+        
       ],
       activeRoute: ''
     }
