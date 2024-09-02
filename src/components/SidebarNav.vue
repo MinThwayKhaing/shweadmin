@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <nav class="sidebar-nav" :class="{ collapsed: isCollapsed }">
     <button class="close-button" @click="toggleSidebar">
@@ -12,24 +11,34 @@
         <p>{{ userEmail }}</p>
       </div>
     </div>
-    <div v-if="!isCollapsed" v-for="(item, index) in navItems" :key="index" class="nav-item">
-      <div @click="toggleSubNav(index)" class="main-nav">
-        <span :class="item.icon"></span> {{ item.title }}
-      </div>
-      <div v-if="activeMainNav === index" class="sub-nav">
-        <router-link
-          v-for="subItem in item.subNav"
-          :key="subItem.title"
-          :to="subItem.route"
-          class="sub-nav-item"
-          :class="{ active: isActive(subItem.route) }"
-        >
-          {{ subItem.title }}
-        </router-link>
+    <!-- Main Navigation Items -->
+    <div v-if="!isCollapsed">
+      <div v-for="(mainNav, mainIndex) in mainNavItems" :key="mainIndex" class="main-nav-item">
+        <div @click="toggleMainNav(mainIndex)" class="main-nav">
+          <span :class="mainNav.icon"></span> {{ mainNav.title }}
+        </div>
+        <div v-if="activeMainNav === mainIndex" class="nav-item">
+          <div v-for="(item, index) in mainNav.items" :key="index" class="nav-sub-item">
+            <div @click="toggleSubNav(index)" class="main-nav">
+              <span :class="item.icon"></span> {{ item.title }}
+            </div>
+            <div v-if="activeSubNav === index" class="sub-nav">
+              <router-link
+                v-for="subItem in item.subNav"
+                :key="subItem.title"
+                :to="subItem.route"
+                class="sub-nav-item"
+                :class="{ active: isActive(subItem.route) }"
+              >
+                {{ subItem.title }}
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="!isCollapsed" class="settings">
-      <router-link to="/settings"> <span class="icon-settings"></span> Settings </router-link>
+      <!-- ? <router-link to="/settings"> <span class="icon-settings"></span> Settings </router-link> -->
     </div>
   </nav>
 </template>
@@ -42,60 +51,30 @@ export default {
       userEmail: '',
       userImage: '',
       activeMainNav: null,
+      activeSubNav: null,
       isCollapsed: false, // State to manage sidebar collapse
-      navItems: [
+      mainNavItems: [
         {
-          title: 'Translators',
-          icon: 'icon-translator',
-          subNav: [
-            { title: 'Create', route: '/translators/create' },
-            { title: 'List', route: '/translators/list' }
-          ]
-        },
-        {
-          title: 'Car',
-          icon: 'icon-car',
-          subNav: [
-            { title: 'Create', route: '/car/create' },
-            { title: 'List', route: '/car/list' }
-          ]
-        },
-        {
-          title: 'Visa Services',
-          icon: 'icon-visa',
-          subNav: [
-            { title: 'Create', route: '/visa/create' },
-            { title: 'List', route: '/visa/list' }
-          ]
-        },
-        {
-          title: 'Visa Extension Type',
-          icon: 'icon-visa-extension-type',
-          subNav: [
-            { title: 'Create', route: '/visa-extension-type/create' },
-            { title: 'List', route: '/visa-extension-type/list' },
-
-          ]
-        },
-        {
-          title: 'Embassy Visa Type',
-          icon: 'icon-embassy-letter-type',
-          subNav: [
-            { title: 'Create', route: '/embassy-letter-type/create' },
-            { title: 'List', route: '/embassy-letter-type/list' },
-
-          ]
-        },
-        {
-          title: '90 Day Report Visa Type',
-          icon: 'icon-embassy-letter-type',
-          subNav: [
-            { title: 'Create', route: '/Report90day-visa-type/create' },
-            { title: 'List', route: '/Report90day-visa-type/list' },
-
-          ]
-        },
-        {
+          title: 'Option',
+          icon: 'icon-options',
+          items: [
+            {
+              title: 'Translators',
+              icon: 'icon-translator',
+              subNav: [
+                { title: 'Create', route: '/translators/create' },
+                { title: 'List', route: '/translators/list' }
+              ]
+            },
+            {
+              title: 'Car',
+              icon: 'icon-car',
+              subNav: [
+                { title: 'Create', route: '/carrent/create' },
+                { title: 'List', route: '/carrent/list' }
+              ]
+            },
+            {
           title: 'News',
           icon: 'icon-news',
           subNav: [
@@ -103,7 +82,72 @@ export default {
             { title: 'List', route: '/news/list' },
 
           ]
+        },
+            {
+              title: 'Visa Services',
+              icon: 'icon-visa',
+              subNav: [
+                { title: 'Create', route: '/visa/create' },
+                { title: 'List', route: '/visa/list' }
+              ]
+            },
+            {
+              title: 'Visa Extension Type',
+              icon: 'icon-visa-extension-type',
+              subNav: [
+                { title: 'Create', route: '/visa-extension-type/create' },
+                { title: 'List', route: '/visa-extension-type/list' }
+              ]
+            },
+            {
+              title: 'Embassy Visa Type',
+              icon: 'icon-embassy-letter-type',
+              subNav: [
+                { title: 'Create', route: '/embassy-letter-type/create' },
+                { title: 'List', route: '/embassy-letter-type/list' }
+              ]
+            },
+            {
+              title: '90 Day Report Visa Type',
+              icon: 'icon-embassy-letter-type',
+              subNav: [
+                { title: 'Create', route: '/Report90day-visa-type/create' },
+                { title: 'List', route: '/Report90day-visa-type/list' }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'Business',
+          icon: 'icon-business',
+          items: [
+            {
+              title: 'TM30',
+              icon: 'icon-tm30',
+              subNav: [
+                { title: 'Create', route: '/tm30/create' },
+                { title: 'List', route: '/tm30businesslist' }
+              ]
+            },
+            {
+              title: '90 Day Report',
+              icon: 'icon-report-90day',
+              subNav: [
+                { title: 'Create', route: '/90dayreport/create' },
+                { title: 'List', route: '/90dayreport/list' }
+              ]
+            },
+            {
+              title: 'Embassy Letter',
+              icon: 'icon-embassy-letter',
+              subNav: [
+                { title: 'Create', route: '/embassyletter/create' },
+                { title: 'List', route: '/embassyletter/list' }
+              ]
+            }
+          ]
         }
+        
       ],
       activeRoute: ''
     }
@@ -112,8 +156,11 @@ export default {
     this.loadUserData()
   },
   methods: {
-    toggleSubNav(index) {
+    toggleMainNav(index) {
       this.activeMainNav = this.activeMainNav === index ? null : index
+    },
+    toggleSubNav(index) {
+      this.activeSubNav = this.activeSubNav === index ? null : index
     },
     isActive(route) {
       return this.activeRoute === route
@@ -134,6 +181,7 @@ export default {
 </script>
 
 <style scoped>
+/* Add your styles here */
 .sidebar-nav {
   width: 250px;
   background-color: #f8f9fa;
@@ -179,7 +227,7 @@ export default {
   color: gray;
 }
 
-.nav-item {
+.main-nav-item {
   margin-bottom: 10px;
 }
 
@@ -189,6 +237,10 @@ export default {
   border-radius: 8px;
   background-color: #e9ecef;
   margin-bottom: 5px;
+}
+
+.nav-sub-item {
+  margin-bottom: 10px;
 }
 
 .sub-nav {
