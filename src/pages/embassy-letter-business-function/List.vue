@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="tm30-business-list">
-    <h1>TM30 Business List</h1>
+    <h1>Embassy Letter Business List</h1>
 
     <!-- Status Filter Navbar -->
     <div class="status-navbar">
@@ -19,7 +19,7 @@
     <input
       v-model="searchString"
       placeholder="Search Cars..."
-      @input="loadTm30"
+      @input="loadEmbassyLetter"
       class="search-box"
     />
 
@@ -27,11 +27,11 @@
     <div class="pagination-controls">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadTm30" />
+        <input type="number" v-model.number="page" @change="loadEmbassyLetter" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadTm30" />
+        <input type="number" v-model.number="size" @change="loadEmbassyLetter" />
       </label>
     </div>
 
@@ -40,6 +40,7 @@
         <tr>
           <th>Order Id</th>
           <th>CreatedDate</th>
+
           <th>PassportBio</th>
           <th>VisaPage</th>
           <th>Duration</th>

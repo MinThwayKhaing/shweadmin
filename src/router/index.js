@@ -19,6 +19,9 @@ import editReport90DayVisaType from '@/pages/Report90day-visa-type/editReport90D
 import listReport90DayVisaType from '@/pages/Report90day-visa-type/listReport90DayVisaType.vue'
 import tm30businesslist from '@/pages/tm30-business-function/List.vue'
 import tm30businessdetail from '@/pages/tm30-business-function/Detail.vue'
+import report90daybusinesslist from '@/pages/report90day-business-function/List.vue'
+import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue';
+
 const routes = [
   { path: '/', name: 'login', component: Login },
   { path: '/home', name: 'home', component: Home },
@@ -78,7 +81,19 @@ const routes = [
     name: 'tm30-business-list',
     component: tm30businesslist
   },
-  { path: '/tm30business/:id/detail', name: 'tm30-business-details', component: tm30businessdetail }
+  { path: '/tm30business/:id/detail', name: 'tm30-business-details', component: tm30businessdetail },
+
+  { 
+    path: '/report90daybusinesslist',
+    name: 'report90day-business-list',
+    component: report90daybusinesslist
+  },
+
+  {
+    path: '/embassyletterbusinesslist',
+    name: 'embassyletter-business-list',
+    component: embassyletterbusinesslist
+  }
 ]
 
 const router = createRouter({

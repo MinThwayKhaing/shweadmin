@@ -124,8 +124,8 @@ export default {
               title: '90 Day Report',
               icon: 'icon-report-90day',
               subNav: [
-                { title: 'Create', route: '/90dayreport/create' },
-                { title: 'List', route: '/90dayreport/list' }
+                { title: 'Create', route: '/report90day/create' },
+                { title: 'List', route: '/report90daybusinesslist' }
               ]
             },
             {
@@ -133,7 +133,7 @@ export default {
               icon: 'icon-embassy-letter',
               subNav: [
                 { title: 'Create', route: '/embassyletter/create' },
-                { title: 'List', route: '/embassyletter/list' }
+                { title: 'List', route: '/embassyletterbusinesslist' }
               ]
             }
           ]
