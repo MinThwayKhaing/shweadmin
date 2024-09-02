@@ -128,3 +128,4 @@ export async function getVisaExtensionTypes() {
     throw new Error('Failed to get all visa extension types')
   }
 }
+
