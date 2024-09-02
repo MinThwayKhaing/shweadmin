@@ -101,7 +101,17 @@ const routes = [
     path: '/news/list',
     name: 'newsList',
     component: newsList
-  }
+  },
+  { 
+    path: '/report90daybusinesslist',
+    name: 'report90day-business-list',
+    component: report90daybusinesslist
+  },
+  { 
+    path: '/embassyletterbusinesslist',
+    name: 'embassyletter-business-list',
+    component: embassyletterbusinesslist
+  }    
 ]
 
 const router = createRouter({
