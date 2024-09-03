@@ -22,10 +22,11 @@ import tm30businessdetail from '@/pages/tm30-business-function/Detail.vue'
 import newsCreate from '@/pages/news/newsCreate.vue'
 import newsEdit from '@/pages/news/newsEdit.vue'
 import newsList from '@/pages/news/newsList.vue'
-
-
 import report90daybusinesslist from '@/pages/report90day-business-function/List.vue'
 import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue';
+import visaServiceCreate from '@/pages/visa-service/visa-service-create.vue'
+import visaServiceList from '@/pages/visa-service/visa-service-list.vue'
+import visaServiceEdit from '@/pages/visa-service/visa-service-edit.vue'
 
 const routes = [
   { path: '/', name: 'login', component: Login, meta: {hideSidebar: true} },
@@ -111,6 +112,22 @@ const routes = [
     path: '/embassyletterbusinesslist',
     name: 'embassyletter-business-list',
     component: embassyletterbusinesslist
+  } ,
+  { 
+    path: '/visa/create',
+    name: 'visa-service-create',
+    component: visaServiceCreate
+  } ,
+  { 
+    path: '/visa/list',
+    name: 'visa-service-list',
+    component: visaServiceList
+  } 
+  ,
+  { 
+    path: '/visa/eidt',
+    name: 'visa-service-edit',
+    component: visaServiceEdit
   }    
 ]
 
