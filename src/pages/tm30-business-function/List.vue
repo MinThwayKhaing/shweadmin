@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="tm30-business-list">
-    <h1>TM30 Business List</h1>
+  <div class="main-order-list">
+    <h1>Main Order List</h1>
 
     <!-- Status Filter Navbar -->
     <div class="status-navbar">
@@ -18,8 +18,8 @@
     <!-- Search Box -->
     <input
       v-model="searchString"
-      placeholder="Search Cars..."
-      @input="loadTm30"
+      placeholder="Search Orders..."
+      @input="loadOrders"
       class="search-box"
     />
 
@@ -27,43 +27,36 @@
     <div class="pagination-controls">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadTm30" />
+        <input type="number" v-model.number="page" @change="loadOrders" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadTm30" />
+        <input type="number" v-model.number="size" @change="loadOrders" />
       </label>
     </div>
 
     <table>
       <thead>
         <tr>
-          <th>Order Id</th>
-          <th>CreatedDate</th>
-          <th>PassportBio</th>
-          <th>VisaPage</th>
-          <th>Duration</th>
-          <th>ContactNumber</th>
+          <th>Order ID</th>
+          <th>Created Date</th>
+          <th>Sys Key</th>
           <th>Status</th>
-          <th>UserName</th>
+          <th>User Name</th>
           <th>Change Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="tm30 in tm30s" :key="tm30.id">
-          <td>{{ tm30.syskey }}</td>
-          <td>{{ tm30.createdDate }}</td>
-          <td>{{ tm30.passportBio }}</td>
-          <td>{{ tm30.visaPage }}</td>
-          <td>{{ tm30.duration }}</td>
-          <td>{{ tm30.contactNumber }}</td>
-          <td>{{ tm30.status }}</td>
-          <td>{{ tm30.userName }}</td>
-
+        <tr v-for="order in orders" :key="order.id">
+          <td>{{ order.order_id }}</td>
+          <td>{{ formatDate(order.createdDate) }}</td>
+          <td>{{ order.sys_key }}</td>
+          <td>{{ order.status }}</td>
+          <td>{{ order.userName }}</td>
           <td>
-            <button @click="updateStatus(tm30.id, 'Cancel_Order')">Cancel</button>
-            <button @click="updateStatus(tm30.id, 'ON_PROGRESS')">On Progress</button>
-            <button @click="updateStatus(tm30.id, 'COMPLETED')">Completed</button>
+            <button @click="updateStatus(order.id, 'Cancel_Order')">Cancel</button>
+            <button @click="updateStatus(order.id, 'ON_PROGRESS')">On Progress</button>
+            <button @click="updateStatus(order.id, 'COMPLETED')">Completed</button>
           </td>
         </tr>
       </tbody>
@@ -75,15 +68,15 @@
 </template>
 
 <script>
-import { fetchTM30Business, updateTM30Business } from '../../../services/tm30businessService'
+import { fetchMainOrders, updateTM30Business } from '../../../services/tm30businessService'
 
 export default {
   data() {
     return {
-      tm30s: [],
-      searchString: '', // Initialize the search string
-      page: 1, // Current page
-      size: 10, // Page size
+      orders: [],
+      searchString: '',
+      page: 1,
+      size: 10,
       loading: false,
       error: null,
       statuses: [
@@ -92,21 +85,19 @@ export default {
         { label: 'On Progress', value: 'ON_PROGRESS' },
         { label: 'Completed', value: 'COMPLETED' }
       ],
-      // Status options
-      activeStatus: 'Pending' // Default status filter
+      activeStatus: 'Pending'
     }
   },
   created() {
-    this.loadTm30()
+    this.loadOrders()
   },
   methods: {
-    async loadTm30() {
+    async loadOrders() {
       this.loading = true
       this.error = null
 
       try {
-        // Fetch only the car rents that match the active status
-        this.tm30s = await fetchTM30Business(
+        this.orders = await fetchMainOrders(
           this.searchString,
           this.page,
           this.size,
@@ -121,23 +112,27 @@ export default {
     },
     filterByStatus(statusValue) {
       this.activeStatus = statusValue
-      this.loadTm30()
+      this.loadOrders()
     },
     async updateStatus(id, newStatus) {
       try {
         await updateTM30Business(id, newStatus)
         alert(`Status updated to ${newStatus} successfully.`)
-        this.loadTm30() // Reload the list after the update
+        this.loadOrders() // Reload the list after the update
       } catch (err) {
         alert(`Failed to update status: ${err.message}`)
       }
+    },
+    formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString(undefined, options)
     }
   }
 }
 </script>
 
 <style scoped>
-.tm30-business-list {
+.main-order-list {
   padding: 20px;
 }
 

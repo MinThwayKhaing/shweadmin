@@ -60,10 +60,14 @@
           <label>Car Color:</label>
           <input v-model="carRent.carColor" type="text" required />
         </div>
-
         <div class="form-group">
           <label>Car Type:</label>
-          <input v-model="carRent.carType" type="number" required />
+          <div class="radio-group">
+            <label v-for="option in carTypeOptions" :key="option" class="radio-label">
+              <input type="radio" v-model="carRent.carType" :value="option" required />
+              {{ option }}
+            </label>
+          </div>
         </div>
 
         <button type="submit">Create Car Rent</button>
@@ -90,6 +94,7 @@ export default {
         carColor: '',
         carType: null
       },
+      carTypeOptions: [2, 4, 6, 78, 9, 11],
       image: null, // To hold the uploaded car image
       imagePreview: null, // To hold the car image preview URL
       loading: false,
@@ -159,7 +164,16 @@ export default {
   padding: 8px;
   box-sizing: border-box;
 }
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.radio-label {
+  margin-right: 10px; /* Adds some spacing between the radio buttons */
+  display: flex;
+  align-items: center;
+}
 .car-image {
   width: 120px;
   height: 120px;

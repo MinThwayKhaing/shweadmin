@@ -1,6 +1,37 @@
 import axios from 'axios'
 import config from '../config.json' // Ensure the path is correct based on your project structure
 
+export async function fetchMainOrders(searchString, page, size, status) {
+  try {
+    const token = sessionStorage.getItem('authToken')
+    if (!token) {
+      throw new Error('Authentication token is missing. Please log in.')
+    }
+
+    const response = await axios.get(`${config.baseurl}main-orders/paginated`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        searchString,
+        status,
+        page,
+        size
+      }
+    })
+
+    return response.data.content || [] // Return an empty array if no content
+  } catch (err) {
+    console.error('Failed to load orders:', err)
+
+    if (err.response && err.response.status === 401) {
+      throw new Error('Unauthorized access. Please log in again.')
+    }
+
+    throw new Error('Failed to load orders')
+  }
+}
+
 export async function fetchTM30Business(searchString, page, size, status) {
   try {
     const token = sessionStorage.getItem('authToken')
