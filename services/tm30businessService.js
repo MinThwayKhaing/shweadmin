@@ -104,3 +104,39 @@ export async function updateTM30Business(id, newStatus) {
     throw new Error('Failed to update TM30 status')
   }
 }
+
+export async function getOrderBySysKey(sysKey) {
+  const token = sessionStorage.getItem('authToken');
+  return axios.get(`${config.baseurl}tm30/getOrderBySysKey/${sysKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+export async function saveDocuments( formData) {
+  try {
+    const token = sessionStorage.getItem('authToken');
+
+    if (!token) {
+      throw new Error('Authentication token is missing. Please log in.');
+    }
+
+    const response = await axios.post(`${config.baseurl}documents/saveDocuments`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data; // Return the response data from the backend
+  } catch (err) {
+    console.error('Failed to save documents:', err);
+
+    if (err.response && err.response.status === 401) {
+      throw new Error('Unauthorized access. Please log in again.');
+    }
+
+    throw new Error('Failed to save documents');
+  }
+}

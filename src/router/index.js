@@ -32,6 +32,8 @@ import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/
 import visaServiceCreate from '@/pages/visa-service/visa-service-create.vue'
 import visaServiceList from '@/pages/visa-service/visa-service-list.vue'
 import visaServiceEdit from '@/pages/visa-service/visa-service-edit.vue'
+import Document_upload from '@/pages/tm30-business-function/Document_upload.vue'
+import DocumentDetail from '@/pages/tm30-business-function/DocumentDetail.vue'
 
 const routes = [
   { path: '/', name: 'login', component: Login, meta: { hideSidebar: true } },
@@ -103,8 +105,8 @@ const routes = [
     component: carBusinessDetail
   },
   {
-    path: '/tm30business/:id/tm30-business-detail',
-    name: 'tm30-business-details',
+    path: '/tm30business/:sysKey/tm30-business-detail',
+    name: 'Tm30BusinessDetail',
     component: tm30BusinessDetail
   },
   {
@@ -161,6 +163,16 @@ const routes = [
     path: '/visa/eidt',
     name: 'visa-service-edit',
     component: visaServiceEdit
+  },
+  {
+    path: '/tm30business/:sysKey/upload-document',
+    name: 'Document_upload',
+    component: Document_upload
+  },
+  {
+    path: '/tm30business/:sysKey/document-detail',
+    name: 'DocumentDetail',
+    component: DocumentDetail
   }
 ]
 
