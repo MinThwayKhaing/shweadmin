@@ -93,32 +93,32 @@ const routes = [
     component: tm30businesslist
   },
   {
-    path: '/tm30business/:id/translator-business-detail',
+    path: '/tm30business/:sysKey/translator-business-detail',
     name: 'translator-business-details',
     component: translatorBusinessDetail
   },
   {
-    path: '/tm30business/:id/car-business-detail',
+    path: '/tm30business/:sysKey/car-business-detail',
     name: 'car-details',
     component: carBusinessDetail
   },
   {
-    path: '/tm30business/:id/tm30-business-detail',
+    path: '/tm30business/:sysKey/tm30-business-detail',
     name: 'tm30-business-details',
     component: tm30BusinessDetail
   },
   {
-    path: '/tm30business/:id/report90Days-business-detail',
+    path: '/tm30business/:sysKey/report90Days-business-detail',
     name: 'report90Days-business-details',
     component: report90DaysBusinessDetail
   },
   {
-    path: '/tm30business/:id/visaService-business-detail',
+    path: '/tm30business/:sysKey/visaService-business-detail',
     name: 'visaService-business-details',
     component: visaServiceBusinessDetail
   },
   {
-    path: '/tm30business/:id/embassy-business-detail',
+    path: '/tm30business/:sysKey/embassy-business-detail',
     name: 'embassy-business-details',
     component: embassyBusinessDetail
   },
