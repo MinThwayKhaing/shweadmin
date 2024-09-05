@@ -18,18 +18,23 @@ import createReport90DayVisaType from '@/pages/Report90day-visa-type/createRepor
 import editReport90DayVisaType from '@/pages/Report90day-visa-type/editReport90DayVisaType.vue'
 import listReport90DayVisaType from '@/pages/Report90day-visa-type/listReport90DayVisaType.vue'
 import tm30businesslist from '@/pages/tm30-business-function/List.vue'
-import tm30businessdetail from '@/pages/tm30-business-function/Detail.vue'
+import translatorBusinessDetail from '@/pages/tm30-business-function/TranslatorDetail.vue'
+import carBusinessDetail from '@/pages/tm30-business-function/CarRentDetail.vue'
+import tm30BusinessDetail from '@/pages/tm30-business-function/Tm30BusinessDetail.vue'
+import visaServiceBusinessDetail from '@/pages/tm30-business-function/VisaServiceBusinessDetail.vue'
+import report90DaysBusinessDetail from '@/pages/tm30-business-function/Report90DaysBusinessDetail.vue'
+import embassyBusinessDetail from '@/pages/tm30-business-function/EmbassyBusinessDetail.vue'
 import newsCreate from '@/pages/news/newsCreate.vue'
 import newsEdit from '@/pages/news/newsEdit.vue'
 import newsList from '@/pages/news/newsList.vue'
 import report90daybusinesslist from '@/pages/report90day-business-function/List.vue'
-import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue';
+import embassyletterbusinesslist from '@/pages/embassy-letter-business-function/List.vue'
 import visaServiceCreate from '@/pages/visa-service/visa-service-create.vue'
 import visaServiceList from '@/pages/visa-service/visa-service-list.vue'
 import visaServiceEdit from '@/pages/visa-service/visa-service-edit.vue'
 
 const routes = [
-  { path: '/', name: 'login', component: Login, meta: {hideSidebar: true} },
+  { path: '/', name: 'login', component: Login, meta: { hideSidebar: true } },
   { path: '/home', name: 'home', component: Home },
   { path: '/translators/create', name: 'translators-create', component: TranslatorsCreate },
   { path: '/translators/list', name: 'translators-list', component: TranslatorsList },
@@ -87,7 +92,36 @@ const routes = [
     name: 'tm30-business-list',
     component: tm30businesslist
   },
-  { path: '/tm30business/:id/detail', name: 'tm30-business-details', component: tm30businessdetail },
+  {
+    path: '/tm30business/:id/translator-business-detail',
+    name: 'translator-business-details',
+    component: translatorBusinessDetail
+  },
+  {
+    path: '/tm30business/:id/car-business-detail',
+    name: 'car-details',
+    component: carBusinessDetail
+  },
+  {
+    path: '/tm30business/:id/tm30-business-detail',
+    name: 'tm30-business-details',
+    component: tm30BusinessDetail
+  },
+  {
+    path: '/tm30business/:id/report90Days-business-detail',
+    name: 'report90Days-business-details',
+    component: report90DaysBusinessDetail
+  },
+  {
+    path: '/tm30business/:id/visaService-business-detail',
+    name: 'visaService-business-details',
+    component: visaServiceBusinessDetail
+  },
+  {
+    path: '/tm30business/:id/embassy-business-detail',
+    name: 'embassy-business-details',
+    component: embassyBusinessDetail
+  },
   {
     path: '/news/create',
     name: 'newsCreate',
@@ -103,32 +137,31 @@ const routes = [
     name: 'newsList',
     component: newsList
   },
-  { 
+  {
     path: '/report90daybusinesslist',
     name: 'report90day-business-list',
     component: report90daybusinesslist
   },
-  { 
+  {
     path: '/embassyletterbusinesslist',
     name: 'embassyletter-business-list',
     component: embassyletterbusinesslist
-  } ,
-  { 
+  },
+  {
     path: '/visa/create',
     name: 'visa-service-create',
     component: visaServiceCreate
-  } ,
-  { 
+  },
+  {
     path: '/visa/list',
     name: 'visa-service-list',
     component: visaServiceList
-  } 
-  ,
-  { 
+  },
+  {
     path: '/visa/eidt',
     name: 'visa-service-edit',
     component: visaServiceEdit
-  }    
+  }
 ]
 
 const router = createRouter({

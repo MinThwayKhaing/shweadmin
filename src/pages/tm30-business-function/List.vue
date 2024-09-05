@@ -35,28 +35,34 @@
       </label>
     </div>
 
-    <table>
+    <table class="styled-table">
       <thead>
         <tr>
           <th>Order ID</th>
           <th>Created Date</th>
-          <th>Sys Key</th>
-          <th>Status</th>
+          <th>Category</th>
           <th>User Name</th>
           <th>Change Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="order in orders" :key="order.id">
-          <td>{{ order.order_id }}</td>
-          <td>{{ formatDate(order.createdDate) }}</td>
+        <tr
+          v-for="order in orders"
+          :key="order.id"
+          @click="navigateToDetail(order.sys_key, order.id)"
+          class="clickable-row"
+        >
           <td>{{ order.sys_key }}</td>
-          <td>{{ order.status }}</td>
+          <td>{{ formatDate(order.createdDate) }}</td>
+          <td>{{ mapSysKeyToCategory(order.sys_key) }}</td>
           <td>{{ order.userName }}</td>
           <td>
-            <button @click="updateStatus(order.id, 'Cancel_Order')">Cancel</button>
-            <button @click="updateStatus(order.id, 'ON_PROGRESS')">On Progress</button>
-            <button @click="updateStatus(order.id, 'COMPLETED')">Completed</button>
+            <button class="status-button" @click.stop="updateStatus(order.id, 'Cancel_Order')">
+              Cancel
+            </button>
+            <button class="status-button" @click.stop="updateStatus(order.id, 'ON_PROGRESS')">
+              On Progress
+            </button>
           </td>
         </tr>
       </tbody>
@@ -126,6 +132,56 @@ export default {
     formatDate(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return new Date(date).toLocaleDateString(undefined, options)
+    },
+    mapSysKeyToCategory(sysKey) {
+      const prefix = sysKey.slice(0, 2)
+
+      switch (prefix) {
+        case 'CR':
+          return 'Car Rental'
+        case 'TR':
+          return 'Translator'
+        case 'TM':
+          return 'TM30'
+        case 'RP':
+          return 'Report90'
+        case 'VE':
+          return 'VISA_EXTENSION'
+        case 'ER':
+          return 'EMBASSY_EXTENSION'
+        default:
+          return 'Unknown Category'
+      }
+    },
+    navigateToDetail(sysKey, id) {
+      const prefix = sysKey.slice(0, 2)
+
+      let route = ''
+      switch (prefix) {
+        case 'CR':
+          route = `/tm30business/${id}/car-business-detail`
+          break
+        case 'TR':
+          route = `/tm30business/${id}/translator-business-detail`
+          break
+        case 'TM':
+          route = `/tm30business/${id}/tm30-business-detail`
+          break
+        case 'RP':
+          route = `/tm30business/${id}/report90Days-business-detail`
+          break
+        case 'VE':
+          route = `/tm30business/${id}/visaService-business-detail`
+          break
+        case 'ER':
+          route = `/tm30business/${id}/embassy-business-detail`
+          break
+        default:
+          route = `/tm30business/${id}/unknown-business-detail`
+          break
+      }
+
+      this.$router.push({ path: route })
     }
   }
 }
@@ -179,25 +235,50 @@ export default {
   padding: 5px;
 }
 
-table {
+.styled-table {
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  background-color: #fff;
 }
 
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
+.styled-table th,
+.styled-table td {
+  padding: 12px;
   text-align: left;
+  border: 1px solid #ddd;
 }
 
-th {
+.styled-table th {
   background-color: #f4f4f4;
+  font-weight: bold;
 }
 
-button {
-  margin-right: 10px;
+.styled-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+.status-button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.status-button:hover {
+  background-color: #0056b3;
 }
 
 .loading {
