@@ -69,9 +69,6 @@
             <button class="status-button" @click.stop="updateStatus(order.id, 'Cancel_Order')">
               Cancel
             </button>
-            <button class="status-button" @click.stop="updateStatus(order.id, 'ON_PROGRESS')">
-              On Progress
-            </button>
           </td>
           <td v-if="isCompleted">
             <button class="view-button" @click.stop="navigateToDocumentDetail(order.sys_key)">
