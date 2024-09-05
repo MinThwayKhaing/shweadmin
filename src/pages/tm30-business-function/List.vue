@@ -153,31 +153,31 @@ export default {
           return 'Unknown Category'
       }
     },
-    navigateToDetail(sysKey, id) {
+    navigateToDetail(sysKey) {
       const prefix = sysKey.slice(0, 2)
 
       let route = ''
       switch (prefix) {
         case 'CR':
-          route = `/tm30business/${id}/car-business-detail`
+          route = `/tm30business/${sysKey}/car-business-detail`
           break
         case 'TR':
-          route = `/tm30business/${id}/translator-business-detail`
+          route = `/tm30business/${sysKey}/translator-business-detail`
           break
         case 'TM':
-          route = `/tm30business/${id}/tm30-business-detail`
+          route = `/tm30business/${sysKey}/tm30-business-detail`
           break
         case 'RP':
-          route = `/tm30business/${id}/report90Days-business-detail`
+          route = `/tm30business/${sysKey}/report90Days-business-detail`
           break
         case 'VE':
-          route = `/tm30business/${id}/visaService-business-detail`
+          route = `/tm30business/${sysKey}/visaService-business-detail`
           break
         case 'ER':
-          route = `/tm30business/${id}/embassy-business-detail`
+          route = `/tm30business/${sysKey}/embassy-business-detail`
           break
         default:
-          route = `/tm30business/${id}/unknown-business-detail`
+          route = `/tm30business/${sysKey}/unknown-business-detail`
           break
       }
 
