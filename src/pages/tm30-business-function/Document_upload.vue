@@ -62,7 +62,7 @@
     const { sysKey } = this.$route.params; // Make sure this matches your route configuration
 
     // Upload documents
-    await saveDocuments(formData);
+    await saveDocuments(sysKey,formData);
     
     // Update the status to Completed
     await updateTM30Business(sysKey, 'COMPLETED');

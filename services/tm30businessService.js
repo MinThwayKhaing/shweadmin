@@ -114,7 +114,7 @@ export async function getOrderBySysKey(sysKey) {
   });
 }
 
-export async function saveDocuments( formData) {
+export async function saveDocuments( syskey,formData) {
   try {
     const token = sessionStorage.getItem('authToken');
 
@@ -122,7 +122,7 @@ export async function saveDocuments( formData) {
       throw new Error('Authentication token is missing. Please log in.');
     }
 
-    const response = await axios.post(`${config.baseurl}documents/saveDocuments`, formData, {
+    const response = await axios.post(`${config.baseurl}documents/saveDocuments/${syskey}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
@@ -139,4 +139,13 @@ export async function saveDocuments( formData) {
 
     throw new Error('Failed to save documents');
   }
+}
+
+export async function getDocumentsBySyskey(syskey) {
+  const token = sessionStorage.getItem('authToken')
+  return axios.get(`${config.baseurl}documents/getDocuments/${syskey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
