@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.7.4",
     "pinia": "^2.2.1",
+    "shwe-app": "file:",
     "vite-plugin-pages": "^0.32.3",
     "vue": "^3.4.29",
     "vue-router": "^4.0.13"

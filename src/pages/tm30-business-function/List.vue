@@ -42,23 +42,37 @@
           <th>Created Date</th>
           <th>Category</th>
           <th>User Name</th>
-          <th>Change Status</th>
+          <th>Status</th>
+          <th v-if="showUploadDocumentColumn && !isCompleted">Upload Documents</th>
+          <th v-if="showChangeStatusColumn && !isCompleted">Change Status</th>
+          <th v-if="isCompleted">View</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="order in orders"
           :key="order.id"
-          @click="navigateToDetail(order.sys_key, order.id)"
+          @click="handleRowClick(order)"
           class="clickable-row"
         >
           <td>{{ order.sys_key }}</td>
           <td>{{ formatDate(order.createdDate) }}</td>
           <td>{{ mapSysKeyToCategory(order.sys_key) }}</td>
           <td>{{ order.userName }}</td>
-          <td>
+          <td>{{ order.status }}</td>
+          <td v-if="order.status === 'ON_PROGRESS'">
+            <button class="upload-button" @click.stop="navigateToDocumentUpload(order.sys_key)">
+              Upload Documents
+            </button>
+          </td>
+          <td v-if="order.status !== 'ON_PROGRESS' && !isCompleted">
             <button class="status-button" @click.stop="updateStatus(order.id, 'Cancel_Order')">
               Cancel
+            </button>
+          </td>
+          <td v-if="isCompleted">
+            <button class="view-button" @click.stop="navigateToDocumentDetail(order.sys_key)">
+              View
             </button>
           </td>
         </tr>
@@ -88,7 +102,19 @@ export default {
         { label: 'On Progress', value: 'ON_PROGRESS' },
         { label: 'Completed', value: 'COMPLETED' }
       ],
-      activeStatus: 'Pending'
+      activeStatus: 'Pending',
+      fileUploads: {} // Store uploaded file info
+    }
+  },
+  computed: {
+    showUploadDocumentColumn() {
+      return this.orders.some(order => order.status === 'ON_PROGRESS')
+    },
+    showChangeStatusColumn() {
+      return this.activeStatus !== 'ON_PROGRESS'
+    },
+    isCompleted() {
+      return this.activeStatus === 'COMPLETED'
     }
   },
   created() {
@@ -106,11 +132,21 @@ export default {
           this.size,
           this.activeStatus
         )
+        // Load file uploads info if necessary
+        // Example: this.fileUploads = await fetchFileUploads()
+        console.log(this.orders)
       } catch (err) {
         this.error = err.message
         console.log(err.message)
       } finally {
         this.loading = false
+      }
+    },
+    handleRowClick(order) {
+      if (order.status === 'COMPLETED') {
+        this.$router.push({ name: 'DocumentDetail', params: { sysKey: order.sys_key } })
+      } else {
+        this.navigateToDetail(order.sys_key)
       }
     },
     filterByStatus(statusValue) {
@@ -132,57 +168,41 @@ export default {
     },
     mapSysKeyToCategory(sysKey) {
       const prefix = sysKey.slice(0, 2)
-
       switch (prefix) {
-        case 'CR':
-          return 'Car Rental'
-        case 'TR':
-          return 'Translator'
-        case 'TM':
-          return 'TM30'
-        case 'RP':
-          return 'Report90'
-        case 'VE':
-          return 'VISA_EXTENSION'
-        case 'ER':
-          return 'EMBASSY_EXTENSION'
-        default:
-          return 'Unknown Category'
+        case 'CR': return 'Car Rental'
+        case 'TR': return 'Translator'
+        case 'TM': return 'TM30'
+        case 'RP': return 'Report90'
+        case 'VE': return 'VISA_EXTENSION'
+        case 'ER': return 'EMBASSY_EXTENSION'
+        default: return 'Unknown Category'
       }
     },
     navigateToDetail(sysKey) {
       const prefix = sysKey.slice(0, 2)
-
       let route = ''
       switch (prefix) {
-        case 'CR':
-          route = `/tm30business/${sysKey}/car-business-detail`
-          break
-        case 'TR':
-          route = `/tm30business/${sysKey}/translator-business-detail`
-          break
-        case 'TM':
-          route = `/tm30business/${sysKey}/tm30-business-detail`
-          break
-        case 'RP':
-          route = `/tm30business/${sysKey}/report90Days-business-detail`
-          break
-        case 'VE':
-          route = `/tm30business/${sysKey}/visaService-business-detail`
-          break
-        case 'ER':
-          route = `/tm30business/${sysKey}/embassy-business-detail`
-          break
-        default:
-          route = `/tm30business/${sysKey}/unknown-business-detail`
-          break
+        case 'CR': route = `/tm30business/${sysKey}/car-business-detail`; break
+        case 'TR': route = `/tm30business/${sysKey}/translator-business-detail`; break
+        case 'TM': route = `/tm30business/${sysKey}/tm30-business-detail`; break
+        case 'RP': route = `/tm30business/${sysKey}/report90Days-business-detail`; break
+        case 'VE': route = `/tm30business/${sysKey}/visaService-business-detail`; break
+        case 'ER': route = `/tm30business/${sysKey}/embassy-business-detail`; break
+        default: route = `/tm30business/${sysKey}/unknown-business-detail`; break
       }
-
-      this.$router.push({ path: route })
+      this.$router.push({ path: route, params: { sysKey } })
+    },
+    navigateToDocumentUpload(sysKey) {
+  this.$router.push({ name: 'Document_upload', params: { sysKey } })
+   },
+    
+    navigateToDocumentDetail(sysKey) {
+      this.$router.push({ name: 'DocumentDetail', params: { sysKey } })
     }
   }
 }
 </script>
+
 
 <style scoped>
 .main-order-list {
