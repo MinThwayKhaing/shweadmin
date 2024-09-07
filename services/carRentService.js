@@ -103,7 +103,20 @@ export async function getCarById(id) {
     }
   })
 }
-
+export async function fetchCarOrderDetailsBySysKey(sysKey) {
+  const token = sessionStorage.getItem('authToken')
+  try {
+    const response = await axios.get(`${config.baseurl}carOrders/details/${sysKey}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response
+  } catch (err) {
+    console.error('Failed to fetch car order details:', err)
+    throw new Error('Failed to fetch car order details')
+  }
+}
 export async function updateCarRent(id, formData) {
   const token = sessionStorage.getItem('authToken')
   return axios.put(`${config.baseurl}carRent/updateCarRent/${id}`, formData, {
