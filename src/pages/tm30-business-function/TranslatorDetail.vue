@@ -12,8 +12,8 @@
       <div class="translator-info">
         <!-- Use default image if translatorImage is null or empty -->
         <img
-          :src="order[9] ? order[9] : defaultImage"
-          alt="Translator Image"
+          :src="order[15] ? order[15] : defaultImage"
+          alt="User Image"
           class="translator-image"
         />
         <h2>{{ order[12] }}</h2>
