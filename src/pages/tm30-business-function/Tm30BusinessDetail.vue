@@ -7,6 +7,7 @@
     <div v-if="success" class="success">{{ success }}</div>
 
     <div v-if="tm30Business" class="details-form">
+
       <div class="form-group">
           <label>Order Id:</label>
           <input v-model="tm30Business.syskey" type="text" readonly />
@@ -90,6 +91,7 @@ export default {
     },
     async markAsInProgress() {
       try {
+        console.log("Id " + this.tm30Business.id)
         await updateTM30Business(this.tm30Business.id, 'ON_PROGRESS')
         this.success = 'Status updated to On Progress successfully.'
         setTimeout(() => {

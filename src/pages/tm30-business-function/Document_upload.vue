@@ -1,7 +1,46 @@
 <template>
-    <div class="upload-document">
+    <div  v-if="tm30Business"  class="upload-document">
       <h1>Upload Documents</h1>
       <form @submit.prevent="submitDocuments">
+          
+        <div class="form-group">
+          <label>Order Id:</label>
+          <input v-model="tm30Business.syskey" type="text" readonly />
+        </div>
+
+        <div class="form-group">
+          <label>Period:</label>
+          <input v-model="tm30Business.period" type="text"  readonly/>
+        </div>
+      <!-- Example for TM30 Business Image Display -->
+      <div class="form-group">
+        <label>Passport Preview:</label>
+        <img
+          :src=" imagePreview ||tm30Business.passportBio || 'https://example.com/default-business-image.jpg'"
+          alt="Business Image"
+          class="business-image"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Visa Preview:</label>
+        <img
+          :src=" imagePreview ||tm30Business.visaPage || 'https://example.com/default-business-image.jpg'"
+          alt="Business Image"
+          class="business-image"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>User Name:</label>
+        <input v-model="tm30Business.userName" type="text" readonly />
+      </div>
+
+      <div class="form-group">
+        <label>Contact Number:</label>
+        <input v-model="tm30Business.contactNumber" type="text" readonly />
+      </div>
+
         <div class="form-group">
           <label>Upload Images:</label>
           <input type="file" multiple @change="handleFileUpload" />
@@ -21,18 +60,39 @@
   </template>
   
   <script>
-  import { saveDocuments, updateTM30Business } from '../../../services/tm30businessService';
+  import {getOrderBySysKey ,saveDocuments, updateTM30Business } from '../../../services/tm30businessService';
   
   export default {
     data() {
       return {
+        tm30Business: null,
         selectedFiles: [],
         loading: false,
         error: null,
         success: null// Ensure sysKey is retrieved from route parameters
       };
     },
+    created() {
+    this.loadBusinessDetails();
+    },
     methods: {
+      async loadBusinessDetails() {
+      const sysKey = this.$route.params.sysKey
+
+      console.log("SysKey is " + sysKey)
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await getOrderBySysKey(sysKey)
+        console.log("Response is " + response.data)
+        this.tm30Business = response.data
+      } catch (err) {
+        this.error = 'Failed to load business details.'
+      } finally {
+        this.loading = false
+      }
+    },
       handleFileUpload(event) {
         const files = Array.from(event.target.files);
         files.forEach((file) => {
@@ -48,9 +108,9 @@
         this.selectedFiles.splice(index, 1);
       },
       async submitDocuments() {
-  this.loading = true;
-  this.error = null;
-  this.success = null;
+      this.loading = true;
+      this.error = null;
+      this.success = null;
 
   try {
     const formData = new FormData();
@@ -59,13 +119,13 @@
     });
     
     // Retrieve the sysKey from route parameters
-    const { sysKey } = this.$route.params; // Make sure this matches your route configuration
+    
 
     // Upload documents
-    await saveDocuments(sysKey,formData);
+    await saveDocuments(this.sysKey,formData);
     
     // Update the status to Completed
-    await updateTM30Business(sysKey, 'COMPLETED');
+    await updateTM30Business(this.tm30Business.id, 'COMPLETED');
     
     this.success = 'Documents uploaded and status updated to Completed successfully.';
     this.selectedFiles = []; // Clear the selected files
