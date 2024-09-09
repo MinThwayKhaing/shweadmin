@@ -142,6 +142,7 @@ export default {
         this.loading = false
       }
     },
+
     handleRowClick(order) {
       if (order.status === 'COMPLETED') {
         this.$router.push({ name: 'DocumentDetail', params: { sysKey: order.sys_key } })
@@ -149,10 +150,14 @@ export default {
         this.navigateToDetail(order.sys_key)
       }
     },
+
+
     filterByStatus(statusValue) {
       this.activeStatus = statusValue
       this.loadOrders()
     },
+
+
     async updateStatus(id, newStatus) {
       try {
         await updateTM30Business(id, newStatus)
@@ -162,10 +167,14 @@ export default {
         alert(`Failed to update status: ${err.message}`)
       }
     },
+
+
     formatDate(date) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' }
       return new Date(date).toLocaleDateString(undefined, options)
     },
+
+    
     mapSysKeyToCategory(sysKey) {
       const prefix = sysKey.slice(0, 2)
       switch (prefix) {

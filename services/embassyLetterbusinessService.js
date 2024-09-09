@@ -45,9 +45,9 @@ export async function updateEmbassyLetter(id, newStatus) {
     if (newStatus === 'Cancel_Order') {
       endpoint = `embassy-letter/cancelOrder/${id}`
     } else if (newStatus === 'ON_PROGRESS') {
-      endpoint = `embassy/onProgress/${id}`
+      endpoint = `embassy-letter/onProgress/${id}`
     } else if (newStatus === 'COMPLETED') {
-      endpoint = `embassy/completed/${id}`
+      endpoint = `embassy-letter/completed/${id}`
     } else {
       throw new Error('Invalid status')
     }
@@ -72,4 +72,14 @@ export async function updateEmbassyLetter(id, newStatus) {
 
     throw new Error('Failed to update TM30 status')
   }
+}
+
+// Get Visa Details by syskey
+export async function getEmbassyLetterSysKey(sysKey) {
+  const token = sessionStorage.getItem('authToken');
+  return axios.get(`${config.baseurl}embassy-letter/getEmbassyLetterOrderById/${sysKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 }

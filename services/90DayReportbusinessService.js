@@ -73,3 +73,12 @@ export async function update90DayReportBusiness(id, newStatus) {
     throw new Error('Failed to update TM30 status')
   }
 }
+
+export async function getReport90DayOrderBySysKey(sysKey) {
+  const token = sessionStorage.getItem('authToken');
+  return axios.get(`${config.baseurl}report90day/getReport90DayOrderById/${sysKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
