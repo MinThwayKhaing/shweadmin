@@ -130,7 +130,7 @@ const routes = [
     component: newsCreate
   },
   {
-    path: '/news/edit',
+    path: '/news/:id/edit',
     name: 'newsEdit',
     component: newsEdit
   },
@@ -160,7 +160,7 @@ const routes = [
     component: visaServiceList
   },
   {
-    path: '/visa/eidt',
+    path: '/visa/:id/eidt',
     name: 'visa-service-edit',
     component: visaServiceEdit
   },
