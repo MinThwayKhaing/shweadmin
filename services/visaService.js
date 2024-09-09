@@ -98,3 +98,57 @@ export async function updateVisaService(id, formData) {
     }
   });
 }
+
+
+
+export async function updateVisaServiceBusiness(id, newStatus) {
+  try {
+    const token = sessionStorage.getItem('authToken')
+    if (!token) {
+      throw new Error('Authentication token is missing. Please log in.')
+    }
+
+    let endpoint = ''
+
+    // Determine which API endpoint to call based on the status
+    if (newStatus === 'Cancel_Order') {
+      endpoint = `visa-extension/cancelOrder/${id}`
+    } else if (newStatus === 'ON_PROGRESS') {
+      endpoint = `visa-extension/onProgress/${id}`
+    } else if (newStatus === 'COMPLETED') {
+      endpoint = `visa-extension/completed/${id}`
+    } else {
+      throw new Error('Invalid status')
+    }
+
+    const response = await axios.put(
+      `${config.baseurl}${endpoint}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    return response.data
+  } catch (err) {
+    console.error('Failed to update TM30 status:', err)
+
+    if (err.response && err.response.status === 401) {
+      throw new Error('Unauthorized access. Please log in again.')
+    }
+
+    throw new Error('Failed to update TM30 status')
+  }
+}
+
+// Get Visa Details by syskey
+export async function getVisaServiceSysKey(sysKey) {
+  const token = sessionStorage.getItem('authToken');
+  return axios.get(`${config.baseurl}visa-extension/getEmbassyLetterOrderById/${sysKey}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+}

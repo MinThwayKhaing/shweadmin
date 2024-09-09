@@ -6,7 +6,7 @@
           <label for="type">Image</label>
           <div class="form-group">
             <label>Upload Image</label>
-            <input type="file" @change="handleImageUpload" />
+            <input type="file" @change="handleImageUpload" accept=".jpeg, .png, .jpg, .pdf, .doc" />
             <img
               v-if="imagePreview"
               :src="imagePreview"
@@ -16,6 +16,14 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            v-model="form.name"
+            required
+            placeholder="Enter name"
+          />
           <label for="description">Description:</label>
           <input
             type="text"
@@ -39,6 +47,7 @@
     data() {
       return {
         form: {
+          name: '',
           description: ''
         },
         image: null, // To hold the uploaded visa image
@@ -47,7 +56,17 @@
     },
     methods: {
       handleImageUpload(event) {
-        const file = event.target.files[0]
+        const file = event.target.files[0];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf', 'application/msword'];
+
+        // Check if the uploaded file type is allowed
+        if(!allowedTypes.includes(file.type)) {
+          alert('Unsupported file type! Please upload a JPEG, PNG, JPG, PDF, or DOC file.')
+          this.image = null
+          this.imagePreview = null
+          event.target.value = '' // Clear the file input
+          return
+        }
         this.image = file
         this.imagePreview = URL.createObjectURL(file)
       },
@@ -55,12 +74,14 @@
         try {
           const formData = new FormData()
           formData.append('image', this.image)
+          formData.append('name',this.form.name)
+          formData.append('description',this.form.description)
           formData.append(
             'request',
             new Blob([JSON.stringify(this.form)], { type: 'application/json' })
           )
           const response = await saveVisa(formData)
-  
+          console.log(formData);
           if (response.status === 200) {
             this.success = response.data // Show success message
             this.$router.push({ name: 'visa-service-list' }) // Redirect to list
