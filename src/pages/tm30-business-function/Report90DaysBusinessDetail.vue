@@ -99,7 +99,7 @@ export default {
         await update90DayReportBusiness(this.report90Day.id, 'ON_PROGRESS')
         this.success = 'Status updated to On Progress successfully.'
         setTimeout(() => {
-          this.$router.push({ name: 'report90Days-business-details' }) // Adjust the route name as necessary
+          this.$router.push({ name: 'tm30-business-list' }) // Adjust the route name as necessary
         }, 1000) // Optional delay for user to see success message
       } catch (err) {
         this.error = `Failed to update status: ${err.message}`

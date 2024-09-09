@@ -1,22 +1,23 @@
 <template>
-    <div  v-if="tm30Business"  class="upload-document">
+    <div  v-if="businessService"  class="upload-document">
       <h1>Upload Documents</h1>
       <form @submit.prevent="submitDocuments">
           
         <div class="form-group">
           <label>Order Id:</label>
-          <input v-model="tm30Business.syskey" type="text" readonly />
+          <input v-model="businessService.order_id" type="text" readonly />
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Period:</label>
-          <input v-model="tm30Business.period" type="text"  readonly/>
-        </div>
+          <input v-model="businessService.period" type="text"  readonly/>
+        </div> -->
+
       <!-- Example for TM30 Business Image Display -->
       <div class="form-group">
         <label>Passport Preview:</label>
         <img
-          :src=" imagePreview ||tm30Business.passportBio || 'https://example.com/default-business-image.jpg'"
+          :src=" imagePreview ||businessService.passportBio || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
           class="business-image"
         />
@@ -25,7 +26,7 @@
       <div class="form-group">
         <label>Visa Preview:</label>
         <img
-          :src=" imagePreview ||tm30Business.visaPage || 'https://example.com/default-business-image.jpg'"
+          :src=" imagePreview ||businessService.visaPage || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
           class="business-image"
         />
@@ -33,12 +34,12 @@
 
       <div class="form-group">
         <label>User Name:</label>
-        <input v-model="tm30Business.userName" type="text" readonly />
+        <input v-model="businessService.userName" type="text" readonly />
       </div>
 
       <div class="form-group">
         <label>Contact Number:</label>
-        <input v-model="tm30Business.contactNumber" type="text" readonly />
+        <input v-model="businessService.contactNumber" type="text" readonly />
       </div>
 
         <div class="form-group">
@@ -60,12 +61,16 @@
   </template>
   
   <script>
-  import {getOrderBySysKey ,saveDocuments, updateTM30Business } from '../../../services/tm30businessService';
-  
+  import {getOrderBySysKey, updateTM30Business } from '../../../services/tm30businessService';
+  import { getReport90DayOrderBySysKey, update90DayReportBusiness} from '../../../services/90DayReportbusinessService';
+  import { getVisaServiceSysKey, updateVisaServiceBusiness } from '../../../services//visaService';
+  import { getEmbassyLetterSysKey, updateEmbassyLetter } from '../../../services/embassyLetterbusinessService';
+  import { saveDocuments } from '../../../services/uploadDocumentService';
+
   export default {
     data() {
       return {
-        tm30Business: null,
+        businessService: null,
         selectedFiles: [],
         loading: false,
         error: null,
@@ -76,24 +81,53 @@
     this.loadBusinessDetails();
     },
     methods: {
+
+
       async loadBusinessDetails() {
       const sysKey = this.$route.params.sysKey
-
+      const prefix = sysKey.substring(0, 2); // Extracts "ER"
       console.log("SysKey is " + sysKey)
       this.loading = true
       this.error = null
 
       try {
-        const response = await getOrderBySysKey(sysKey)
+        let response = null;
+
+        switch(prefix) {
+          case 'TM': //TM30 Business
+          response = await getOrderBySysKey(sysKey);
+          this.businessService = response.data;
+          break;
+
+          case 'RP': //90DayReport Business
+          response = await getReport90DayOrderBySysKey(sysKey);
+          this.businessService = response.data;
+          break;
+
+          case 'VE': //VisaExtension Business
+          response = await getVisaServiceSysKey(sysKey);
+          this.businessService = response.data;
+          break;
+
+          case 'ER': //EmbassyReport Business
+          response = await getEmbassyLetterSysKey(sysKey);
+          this.businessService = response.data;
+          break;
+
+          default:
+          throw new Error('Invalid sysKey prefix');
+
+        }
         console.log("Response is " + response.data)
-        this.tm30Business = response.data
       } catch (err) {
         this.error = 'Failed to load business details.'
       } finally {
         this.loading = false
       }
     },
-      handleFileUpload(event) {
+
+
+    handleFileUpload(event) {
         const files = Array.from(event.target.files);
         files.forEach((file) => {
           const reader = new FileReader();
@@ -101,44 +135,67 @@
             file.preview = e.target.result;
             this.selectedFiles.push(file);
           };
-          reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
         });
-      },
-      removeFile(index) {
-        this.selectedFiles.splice(index, 1);
-      },
-      async submitDocuments() {
+    },
+
+
+    removeFile(index) {
+      this.selectedFiles.splice(index, 1);
+    },
+
+
+    async submitDocuments() {
       this.loading = true;
       this.error = null;
       this.success = null;
 
-  try {
-    const formData = new FormData();
-    this.selectedFiles.forEach((file) => {
-      formData.append('images', file);
-    });
-    
-    // Retrieve the sysKey from route parameters
-    
+      try {
+        const formData = new FormData();
+        this.selectedFiles.forEach((file) => {
+          formData.append('images', file);
+        });
+        
+        // Retrieve the sysKey from route parameters
+        
 
-    // Upload documents
-    await saveDocuments(this.sysKey,formData);
-    
-    // Update the status to Completed
-    await updateTM30Business(this.tm30Business.id, 'COMPLETED');
-    
-    this.success = 'Documents uploaded and status updated to Completed successfully.';
-    this.selectedFiles = []; // Clear the selected files
+        // Upload documents
+        await saveDocuments(this.sysKey,formData);
+        
+        // Update the status to Completed
+        switch (this.prefix) {
+          case 'TM': //TM30 Business
+            await updateTM30Business(this.businessService.id, 'COMPLETED');
+          break;
 
-    // Navigate back to the main order list
-    this.$router.push({ name: 'tm30-business-list' }); // Adjust the route name as necessary
-  } catch (error) {
-    this.error = error.message || 'Failed to upload documents.';
-    console.error('Error:', error);
-  } finally {
-    this.loading = false;
-  }
-}
+          case 'RP': //90DayReport Business
+            await update90DayReportBusiness(this.businessService.id, 'COMPLETED');
+          break;
+
+          case 'VE': //VisaExtension Business
+            await updateVisaServiceBusiness(this.businessService.id, 'COMPLETED');
+          break;
+
+          case 'ER': //EmbassyReport Business
+            await updateEmbassyLetter(this.businessService.id, 'COMPLETED');
+          break;
+
+          default:
+          throw new Error('Invalid sysKey prefix');
+
+        }
+        this.success = 'Documents uploaded and status updated to Completed successfully.';
+        this.selectedFiles = []; // Clear the selected files
+
+        // Navigate back to the main order list
+        this.$router.push({ name: 'tm30-business-list' }); // Adjust the route name as necessary
+      } catch (error) {
+        this.error = error.message || 'Failed to upload documents.';
+        console.error('Error:', error);
+      } finally {
+        this.loading = false;
+      }
+    }
 ,
     },
   };
