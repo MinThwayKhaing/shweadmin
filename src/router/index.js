@@ -55,7 +55,7 @@ const routes = [
     component: visaExtensionTypeList
   },
   {
-    path: '/visa-extension-type/edit',
+    path: '/visa-extension-type/:id/edit',
     name: 'visa-extension-type-edit',
     component: visaExtensionTypeEdit
   },
@@ -65,7 +65,7 @@ const routes = [
     component: EmbassyLetterTypeCreate
   },
   {
-    path: '/embassy-letter-type/edit',
+    path: '/embassy-letter-type/:id/edit',
     name: 'embassy-letter-type-edit',
     component: EmbassyLetterTypeEdit
   },
@@ -85,7 +85,7 @@ const routes = [
     component: listReport90DayVisaType
   },
   {
-    path: '/Report90day-visa-type/edit',
+    path: '/Report90day-visa-type/:id/edit',
     name: 'editReport90DayVisaType',
     component: editReport90DayVisaType
   },

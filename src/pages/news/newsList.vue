@@ -18,12 +18,14 @@
         <thead>
           <tr>
             <th>Description</th>
+            <th>Created Date</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="newsItem in newsList" :key="newsItem.id">
             <td>{{ newsItem.description }}</td>
+            <td>{{ formatDate(newsItem.createdDate) }}</td>
             <td>
               <button @click="editNews(newsItem.id)">Edit</button>
               <button @click="deleteNews(newsItem.id)">Delete</button>
@@ -69,7 +71,10 @@
         this.loading = false
       }
 }
-,
+,formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString(undefined, options)
+    },
       editNews(newsId) {
         this.$router.push({ name: 'newsEdit', params: { id: newsId } });
       },

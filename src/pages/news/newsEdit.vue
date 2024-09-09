@@ -31,8 +31,8 @@
         </div>
 
         <div class="form-group">
-          <label>Title:</label>
-          <input v-model="news.date" type="text" required />
+          <label>Date:</label>
+          <div class="date-box">{{ formatDate(news.date) }}</div>
         </div>
 
         <div class="form-group">
@@ -85,6 +85,9 @@ export default {
       } finally {
         this.loading = false;
       }
+    },formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' }
+      return new Date(date).toLocaleDateString(undefined, options)
     },
     handleFilesChange(event) {
       const files = Array.from(event.target.files);
@@ -212,6 +215,14 @@ export default {
   color: green;
   text-align: center;
   font-weight: bold;
+}
+
+.date-box {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  display: inline-block;
 }
 </style>
 
