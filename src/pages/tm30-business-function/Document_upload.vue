@@ -2,10 +2,9 @@
     <div  v-if="businessService"  class="upload-document">
       <h1>Upload Documents</h1>
       <form @submit.prevent="submitDocuments">
-          
         <div class="form-group">
           <label>Order Id:</label>
-          <input v-model="businessService.order_id" type="text" readonly />
+          <input v-model=sysKey type="text" readonly />
         </div>
 
         <!-- <div class="form-group">
@@ -74,7 +73,9 @@
         selectedFiles: [],
         loading: false,
         error: null,
-        success: null// Ensure sysKey is retrieved from route parameters
+        success: null,// Ensure sysKey is retrieved from route parameters
+        sysKey: null,
+        prefix: null
       };
     },
     created() {
@@ -84,33 +85,35 @@
 
 
       async loadBusinessDetails() {
-      const sysKey = this.$route.params.sysKey
-      const prefix = sysKey.substring(0, 2); // Extracts "ER"
-      console.log("SysKey is " + sysKey)
+      this.sysKey = this.$route.params.sysKey
+      
+      this.prefix = this.sysKey.substring(0, 2); // Extracts "ER"
+      
+      console.log("SysKey is " + this.sysKey)
       this.loading = true
       this.error = null
 
       try {
         let response = null;
 
-        switch(prefix) {
+        switch(this.prefix) {
           case 'TM': //TM30 Business
-          response = await getOrderBySysKey(sysKey);
+          response = await getOrderBySysKey(this.sysKey);
           this.businessService = response.data;
           break;
 
           case 'RP': //90DayReport Business
-          response = await getReport90DayOrderBySysKey(sysKey);
+          response = await getReport90DayOrderBySysKey(this.sysKey);
           this.businessService = response.data;
           break;
 
           case 'VE': //VisaExtension Business
-          response = await getVisaServiceSysKey(sysKey);
+          response = await getVisaServiceSysKey(this.sysKey);
           this.businessService = response.data;
           break;
 
           case 'ER': //EmbassyReport Business
-          response = await getEmbassyLetterSysKey(sysKey);
+          response = await getEmbassyLetterSysKey(this.sysKey);
           this.businessService = response.data;
           break;
 
