@@ -18,12 +18,14 @@
         <p><strong>To Location:</strong> {{ carOrder.toLocation }}</p>
         <p><strong>Customer Phone Number:</strong> {{ carOrder.customerPhoneNumber }}</p>
         <p><strong>Price:</strong> {{ carOrder.price }}</p>
+
       </div>
 
       <!-- Car Information -->
       <div class="car-info">
         <h2>Car Information</h2>
         <img :src="carOrder.carImage || defaultImage" alt="Car Image" class="car-image" />
+                
         <p><strong>Car Name:</strong> {{ carOrder.carName }}</p>
         <p><strong>Owner Name:</strong> {{ carOrder.ownerName }}</p>
         <p><strong>Car No:</strong> {{ carOrder.carNo }}</p>
@@ -33,7 +35,7 @@
         <p><strong>Driver Phone Number:</strong> {{ carOrder.driverPhoneNumber }}</p>
         <p><strong>Car Color:</strong> {{ carOrder.carColor }}</p>
       </div>
-
+      <button @click="updateCarOrder" class="update-btn">Update Car Order</button>
       <!-- User Information -->
       <div class="user-info">
         <h2>User Information</h2>
@@ -68,11 +70,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="car in carList" :key="car.id">
+              <tr v-for="car in carList" :key="car.id" @click="selectCar(car)">
                 <td>{{ car.carName }}</td>
                 <td>{{ car.ownerName }}</td>
                 <td>{{ car.carNo }}</td>
-                <td><button @click="selectCar(car)">Select</button></td>
               </tr>
             </tbody>
           </table>
@@ -86,7 +87,7 @@
 </template>
 
 <script>
-import { fetchCarOrderDetailsBySysKey, fetchCarRent } from '../../../services/carRentService'
+import { fetchCarOrderDetailsBySysKey, fetchCarRent,updateCarOrder } from '../../../services/carRentService'
 import defaultImage from '@/assets/default.jpg'
 
 export default {
@@ -98,6 +99,7 @@ export default {
       carOrder: {}, // Holds the car order details
       loading: true, // Loading state
       error: null, // Error state
+      carUpdateData: [],
       defaultImage // Default image for the car and user
     }
   },
@@ -110,10 +112,28 @@ export default {
         const sysKey = this.$route.params.sysKey // Get sysKey from the route params
         const response = await fetchCarOrderDetailsBySysKey(sysKey) // Fetch the car order details by sysKey
         this.carOrder = response.data // Assign the fetched data to carOrder
+        this.carUpdateData = {
+          sys_key: this.carOrder.sysKey,
+          carId: this.carOrder.id,
+        }
         this.loading = false
       } catch (err) {
         this.error = 'Failed to load car order details'
         this.loading = false
+      }
+    },
+    async updateCarOrder() {
+      try {
+   
+        // Call the updateCarRent API with the car ID and form data
+        const response = await updateCarOrder(this.carOrder.sysKey, this.carUpdateData)
+        
+        console.log('Update successful:', response.data)
+        alert('Car order updated successfully!')
+        this.$router.push({ name: 'tm30-business-list' });
+      } catch (err) {
+        console.error('Failed to update car order:', err)
+        alert('Failed to update car order. Please try again.')
       }
     },
     async fetchCarList() {
@@ -135,6 +155,7 @@ export default {
     },
     // Select a car and fill in the car information
     selectCar(car) {
+      this.carOrder.carId=car.carId
       this.carOrder.carName = car.carName
       this.carOrder.ownerName = car.ownerName
       this.carOrder.carNo = car.carNo
@@ -144,6 +165,11 @@ export default {
       this.carOrder.driverName = car.driverName
       this.carOrder.driverPhoneNumber = car.driverPhoneNumber
       this.carOrder.carColor = car.carColor
+      this.carUpdateData = {
+          sys_key: this.carOrder.sysKey,
+          carId: this.carOrder.carId,
+        }
+        
       this.showModal = false
     },
     // Format the date for display
@@ -181,7 +207,19 @@ export default {
   text-align: center;
   font-size: 1.5em;
 }
+.update-btn {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1em;
+}
 
+.update-btn:hover {
+  background-color: #218838;
+}
 .error {
   text-align: center;
   color: red;
