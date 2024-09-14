@@ -159,7 +159,7 @@ export default {
         console.log(this.order[13])
         // Call API to update the order
         await updateTranslatorOrderFromAdmin(this.order[13], updatePayload)
-
+        this.$router.push({ name: 'tm30-business-list' });
         alert('Order updated successfully')
       } catch (err) {
         console.error('Failed to update order:', err)

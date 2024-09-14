@@ -1,6 +1,15 @@
 import axios from 'axios'
 import config from '../config.json' // Ensure the path is correct based on your project structure
 
+export async function updateCarOrder(sysKey, formData) {
+  const token = sessionStorage.getItem('authToken')
+  return axios.put(`${config.baseurl}carOrders/updateCarOrderFromAdmin/${sysKey}`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+}
+
 export async function fetchCarRent(searchString, page, size) {
   try {
     const token = sessionStorage.getItem('authToken')
