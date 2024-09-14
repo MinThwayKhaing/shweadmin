@@ -1,34 +1,37 @@
 <template>
-  <nav class="sidebar-nav" :class="{ collapsed: isCollapsed }">
+  <nav :class="['flex flex-col justify-between p-5 transition-width duration-300 ease-in-out shadow-xl', { 'w-14': isCollapsed, 'w-64': !isCollapsed, 'bg-amber-100': true }]">
     <button class="close-button" @click="toggleSidebar">
-      <span v-if="!isCollapsed">×</span>
-      <span v-else>☰</span>
+      <span v-if="!isCollapsed" class="text-yellow-950">×</span>
+      <span v-else class="text-yellow-950">☰</span>
     </button>
     <div v-if="!isCollapsed" class="user-info">
       <img :src="userImage" alt="User Image" class="user-image" v-if="userImage" />
       <div class="user-details">
-        <h4>{{ userName }}</h4>
-        <p>{{ userEmail }}</p>
+        <h4 class="text-black">{{ userName }}</h4>
+        <p class="text-black">{{ userEmail }}</p>
       </div>
     </div>
     <!-- Main Navigation Items -->
     <div v-if="!isCollapsed">
-      <div v-for="(mainNav, mainIndex) in mainNavItems" :key="mainIndex" class="main-nav-item">
-        <div @click="toggleMainNav(mainIndex)" class="main-nav">
+      <div v-for="(mainNav, mainIndex) in mainNavItems" :key="mainIndex" class="mb-4">
+        <div @click="toggleMainNav(mainIndex)" class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
           <span :class="mainNav.icon"></span> {{ mainNav.title }}
         </div>
-        <div v-if="activeMainNav === mainIndex" class="nav-item">
+        <div v-if="activeMainNav === mainIndex" class="nav-item my-5">
           <div v-for="(item, index) in mainNav.items" :key="index" class="nav-sub-item">
-            <div @click="toggleSubNav(index)" class="main-nav">
+            <div @click="toggleSubNav(index)" class="cursor-pointer p-2 rounded-lg mb-1 text-yellow-950 border border-transparent hover:border-yellow-950 transition ease-in duration-150">
               <span :class="item.icon"></span> {{ item.title }}
             </div>
-            <div v-if="activeSubNav === index" class="sub-nav">
+            <div v-if="activeSubNav === index" class="pl-5">
               <router-link
                 v-for="subItem in item.subNav"
                 :key="subItem.title"
                 :to="subItem.route"
-                class="sub-nav-item"
-                :class="{ active: isActive(subItem.route) }"
+                class="block p-2 my-1 rounded-lg no-underline text-yellow-950 transition-colors duration-300"
+                :class="{ 
+                  'border border-yellow-600': isActive(subItem.route),
+                  'hover:border hover:border-yellow-950 hover:bg-transparent rounded-lg': true 
+                }"
               >
                 {{ subItem.title }}
               </router-link>

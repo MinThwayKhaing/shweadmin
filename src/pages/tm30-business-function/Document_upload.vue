@@ -1,63 +1,70 @@
 <template>
-    <div  v-if="businessService"  class="upload-document">
-      <h1>Upload Documents</h1>
-      <form @submit.prevent="submitDocuments">
-        <div class="form-group">
-          <label>Order Id:</label>
-          <input v-model=sysKey type="text" readonly />
-        </div>
+  <div v-if="businessService" class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-bold mb-6">Upload Documents</h1>
+    <form @submit.prevent="submitDocuments">
+      
+      <!-- Order ID -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">Order Id:</label>
+        <input v-model="sysKey" type="text" readonly class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" />
+      </div>
 
-        <!-- <div class="form-group">
-          <label>Period:</label>
-          <input v-model="businessService.period" type="text"  readonly/>
-        </div> -->
-
-      <!-- Example for TM30 Business Image Display -->
-      <div class="form-group">
-        <label>Passport Preview:</label>
+      <!-- Passport Preview -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">Passport Preview:</label>
         <img
-          :src=" imagePreview ||businessService.passportBio || 'https://example.com/default-business-image.jpg'"
-          alt="Business Image"
-          class="business-image"
+          :src="imagePreview || businessService.passportBio || 'https://example.com/default-business-image.jpg'"
+          alt="Passport Image"
+          class="w-40 h-40 object-cover rounded-md border"
         />
       </div>
 
-      <div class="form-group">
-        <label>Visa Preview:</label>
+      <!-- Visa Preview -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">Visa Preview:</label>
         <img
-          :src=" imagePreview ||businessService.visaPage || 'https://example.com/default-business-image.jpg'"
-          alt="Business Image"
-          class="business-image"
+          :src="imagePreview || businessService.visaPage || 'https://example.com/default-business-image.jpg'"
+          alt="Visa Image"
+          class="w-40 h-40 object-cover rounded-md border"
         />
       </div>
 
-      <div class="form-group">
-        <label>User Name:</label>
-        <input v-model="businessService.userName" type="text" readonly />
+      <!-- User Name -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">User Name:</label>
+        <input v-model="businessService.userName" type="text" readonly class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" />
       </div>
 
-      <div class="form-group">
-        <label>Contact Number:</label>
-        <input v-model="businessService.contactNumber" type="text" readonly />
+      <!-- Contact Number -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">Contact Number:</label>
+        <input v-model="businessService.contactNumber" type="text" readonly class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" />
       </div>
 
-        <div class="form-group">
-          <label>Upload Images:</label>
-          <input type="file" multiple @change="handleFileUpload" />
-          <div class="image-previews">
-            <div v-for="(file, index) in selectedFiles" :key="index" class="image-preview">
-              <img :src="file.preview" :alt="'Image ' + index" class="preview-img" />
-              <button type="button" @click="removeFile(index)" class="remove-file">×</button>
-            </div>
+      <!-- File Upload -->
+      <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-2">Upload Images:</label>
+        <input type="file" multiple @change="handleFileUpload" class="w-full p-2 border rounded-md" />
+        <div class="flex m-4">
+          <div v-for="(file, index) in selectedFiles" :key="index" class="relative mr-4">
+            <img :src="file.preview" :alt="'Image ' + index" class="w-40 h-40 object-cover rounded-md border" />
+            <div>{{ file.name }}</div>
+            <button type="button" @click="removeFile(index)" class="absolute top-[-5px] left-[145px] bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center z-10">×</button>
           </div>
         </div>
-        <button type="submit">Upload</button>
-      </form>
-      <div v-if="loading" class="loading">Loading...</div>
-      <div v-if="error" class="error">{{ error }}</div>
-      <div v-if="success" class="success">{{ success }}</div>
-    </div>
-  </template>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="w-full p-3 bg-yellow-500 text-yellow-950 font-bold rounded-md hover:bg-yellow-700 transition">Upload</button>
+    </form>
+
+    <!-- Loading and Status Messages -->
+    <div v-if="loading" class="mt-4 text-blue-600">Loading...</div>
+    <div v-if="error" class="mt-4 text-red-600">{{ error }}</div>
+    <div v-if="success" class="mt-4 text-green-600">{{ success }}</div>
+  </div>
+</template>
+
   
   <script>
   import {getOrderBySysKey, updateTM30Business } from '../../../services/tm30businessService';
@@ -65,6 +72,8 @@
   import { getVisaServiceSysKey, updateVisaServiceBusiness } from '../../../services//visaService';
   import { getEmbassyLetterSysKey, updateEmbassyLetter } from '../../../services/embassyLetterbusinessService';
   import { saveDocuments } from '../../../services/uploadDocumentService';
+  import pdfLogoUrl from '@/assets/pdffile.svg'; // Import the SVG file
+
 
   export default {
     data() {
@@ -75,7 +84,8 @@
         error: null,
         success: null,// Ensure sysKey is retrieved from route parameters
         sysKey: null,
-        prefix: null
+        prefix: null,
+        pdfLogoUrl,
       };
     },
     created() {
@@ -132,13 +142,23 @@
 
     handleFileUpload(event) {
         const files = Array.from(event.target.files);
+        
+        
         files.forEach((file) => {
-          const reader = new FileReader();
-          reader.onload = (e) => {
+          if (file.type === 'application/pdf') {
+            file.preview = pdfLogoUrl; // Set the PDF logo for PDF files
+            this.selectedFiles.push(file);
+            
+          } else {
+            // Generate image preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
             file.preview = e.target.result;
             this.selectedFiles.push(file);
           };
-        reader.readAsDataURL(file);
+          reader.readAsDataURL(file);
+          return;
+          }
         });
     },
 

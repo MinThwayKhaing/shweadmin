@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router' // Import router from the new folder
 import { createPinia } from 'pinia'
+import './assets/main.css';
 
 // Create the Pinia store instance
 const pinia = createPinia()

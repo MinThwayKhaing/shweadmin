@@ -16,9 +16,12 @@ export default {
 <style>
 body {
   height: 100vh;
+  width: 100vw;
   margin: 0;
 }
 #app {
-  height: 100%;
+  height: 100vh;
+  width: 100vw;
+  
 }
 </style>

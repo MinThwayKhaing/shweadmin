@@ -2,7 +2,7 @@
 <template>
   <div class="home">
     <div class="home-content">
-      <header class="home-header">
+      <header class="home-header bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-slate-950 font-semibold shadow-lg">
         <h1>Hello, {{ userName }}!</h1>
         <p>{{ currentDate }}</p>
       </header>
@@ -53,9 +53,11 @@ export default {
 }
 
 .home-header {
-  background-color: #f9f9f9;
+  background-color: #f1f1f1;
+  color: #000;
   padding: 20px;
   margin-bottom: 20px;
+  border-radius: 8px;
 }
 
 .overview {
@@ -65,7 +67,8 @@ export default {
 }
 
 .card {
-  background-color: #f1f1f1;
+  background-color: #fff;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   padding: 20px;
   border-radius: 8px;
   flex: 1;

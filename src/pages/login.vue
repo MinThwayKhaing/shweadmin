@@ -1,5 +1,5 @@
-<template>
-  <div class="login-container">
+<!-- <template>
+  <div class="h-screen w-screen flex items-center justify-center bg-gray-100">
     <h2 class="title">Login</h2>
     <form @submit.prevent="handleLogin">
       <div class="form-group">
@@ -13,6 +13,26 @@
       <button type="submit">Login</button>
       <p v-if="errorMessage">{{ errorMessage }}</p>
     </form>
+  </div>
+</template> -->
+
+<template>
+  <div class="h-screen w-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="title text-2xl font-semibold mb-6 text-center">Login</h2>
+      <form @submit.prevent="handleLogin">
+        <div class="mb-4">
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Phone Number</label>
+          <input type="text" id="phoneNumber" v-model="phoneNumber" required class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        </div>
+        <div class="mb-6">
+          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="password" v-model="password" required class="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">Login</button>
+        <p v-if="errorMessage" class="mt-4 text-red-500 text-sm">{{ errorMessage }}</p>
+      </form>
+    </div>
   </div>
 </template>
 

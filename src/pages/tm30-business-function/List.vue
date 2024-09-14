@@ -1,14 +1,31 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="main-order-list">
-    <h1>Main Order List</h1>
+    <h1 class="text-2xl text-black">Main Order List</h1>
 
     <!-- Status Filter Navbar -->
-    <div class="status-navbar">
+    <div class="flex m-auto">
       <button
         v-for="(status, index) in statuses"
         :key="index"
-        :class="{ active: activeStatus === status.value }"
+        :class="[
+        'mr-2',
+        'mb-4',
+        'mt-4',
+        'p-2',
+        'rounded-lg',
+        'border',
+        'transition-colors',
+        'focus:outline-none',
+        'focus:ring-2',
+        'focus:ring-yellow-600',
+        'focus:ring-offset-2',
+        {
+          'bg-yellow-600 text-black border-yellow-600': activeStatus === status.value,
+          'bg-transparent text-amber-600 border-yellow-600': activeStatus !== status.value,
+          'hover:bg-yellow-100': activeStatus !== status.value
+        }
+      ]"
         @click="filterByStatus(status.value)"
       >
         {{ status.label }}
@@ -20,18 +37,18 @@
       v-model="searchString"
       placeholder="Search Orders..."
       @input="loadOrders"
-      class="search-box"
+      class="w-full max-w-md mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
     />
 
     <!-- Pagination Controls -->
-    <div class="pagination-controls">
+    <div  class="mb-5 flex gap-5">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadOrders" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out" type="number" v-model.number="page" @change="loadOrders" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadOrders" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out" type="number" v-model.number="size" @change="loadOrders" />
       </label>
     </div>
 
@@ -61,17 +78,17 @@
           <td>{{ order.userName }}</td>
           <td>{{ order.status }}</td>
           <td v-if="order.status === 'ON_PROGRESS'">
-            <button class="upload-button" @click.stop="navigateToDocumentUpload(order.sys_key)">
+            <button class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click.stop="navigateToDocumentUpload(order.sys_key)">
               Upload Documents
             </button>
           </td>
           <td v-if="order.status !== 'ON_PROGRESS' && !isCompleted">
-            <button class="status-button" @click.stop="updateStatus(order.id, 'Cancel_Order')">
+            <button class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click.stop="updateStatus(order.id, 'Cancel_Order')">
               Cancel
             </button>
           </td>
           <td v-if="isCompleted">
-            <button class="view-button" @click.stop="navigateToDocumentDetail(order.sys_key)">
+            <button class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click.stop="navigateToDocumentDetail(order.sys_key)">
               View
             </button>
           </td>
@@ -103,7 +120,8 @@ export default {
         { label: 'Completed', value: 'COMPLETED' }
       ],
       activeStatus: 'Pending',
-      fileUploads: {} // Store uploaded file info
+      fileUploads: {}, // Store uploaded file info
+
     }
   },
   computed: {
@@ -202,8 +220,8 @@ export default {
       this.$router.push({ path: route, params: { sysKey } })
     },
     navigateToDocumentUpload(sysKey) {
-  this.$router.push({ name: 'Document_upload', params: { sysKey } })
-   },
+      this.$router.push({ name: 'Document_upload', params: { sysKey } })
+    },
     
     navigateToDocumentDetail(sysKey) {
       this.$router.push({ name: 'DocumentDetail', params: { sysKey } })
@@ -216,6 +234,7 @@ export default {
 <style scoped>
 .main-order-list {
   padding: 20px;
+  font-weight: bold;
 }
 
 .status-navbar {
@@ -267,6 +286,7 @@ export default {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   background-color: #fff;
+  
 }
 
 .styled-table th,
@@ -274,23 +294,25 @@ export default {
   padding: 12px;
   text-align: left;
   border: 1px solid #ddd;
+  
 }
 
 .styled-table th {
-  background-color: #f4f4f4;
+  background-color: #a16207;
+  color:#fef9c3;
   font-weight: bold;
 }
 
 .styled-table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 
 .styled-table tbody tr:nth-child(even) {
-  background-color: #f1f1f1;
+  background-color: #fef9c3;
 }
 
 .styled-table tbody tr:hover {
-  background-color: #e9ecef;
+  background-color: #ca8a04;
   cursor: pointer;
 }
 

@@ -1,10 +1,15 @@
 <template>
-  <div :class="['main-layout', { collapsed: isCollapsed }]">
-    <SidebarNav v-if="isAuthenticated && !isLoginPage" @toggle="handleToggle" />
-    <!-- Include the sidebar navigation -->
-    <div class="content">
-      <router-view />
-      <!-- This is where the main content of each page will be rendered -->
+  <div :class="['h-screen w-screen overflow-x-hidden', { collapsed: isCollapsed }]">
+    
+    <div :class="['h-full w-full',{'flex': !isLoginPage}]">
+      <SidebarNav v-if="isAuthenticated && !isLoginPage" @toggle="handleToggle" />
+      <!-- Include the sidebar navigation -->
+    
+    
+      <div class="w-screen overflow-x-hidden">
+        <router-view />
+        <!-- This is where the main content of each page will be rendered -->
+      </div>
     </div>
   </div>
 </template>
