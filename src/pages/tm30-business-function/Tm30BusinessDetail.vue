@@ -1,29 +1,29 @@
 <template>
-  <div class="tm30-business-details">
-    <h1>TM30 Business Details</h1>
+  <div class="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">TM30 Business Details</h1>
 
-    <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">{{ error }}</div>
-    <div v-if="success" class="success">{{ success }}</div>
+    <div v-if="loading" class="loading text-center text-blue-500 font-semibold">Loading...</div>
+    <div v-if="error" class="error text-center text-red-500">{{ error }}</div>
+    <div v-if="success" class="success text-center text-green-500">{{ success }}</div>
 
-    <div v-if="tm30Business" class="details-form">
+    <div v-if="tm30Business" class="details-form space-y-4">
 
       <div class="form-group">
-          <label>Order Id:</label>
-          <input v-model="tm30Business.syskey" type="text" readonly />
+          <label class="block text-gray-700 font-medium mb-1">Order Id:</label>
+          <input v-model="tm30Business.syskey" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
         </div>
 
         <div class="form-group">
-          <label>Period:</label>
-          <input v-model="tm30Business.period" type="text"  readonly/>
+          <label class="block text-gray-700 font-medium mb-1">Period:</label>
+          <input v-model="tm30Business.period" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed"  readonly/>
         </div>
       <!-- Example for TM30 Business Image Display -->
       <div class="form-group">
-        <label>Passport Preview:</label>
+        <label class="block text-gray-700 font-medium mb-1">Passport Preview:</label>
         <img
           :src=" imagePreview ||tm30Business.passportBio || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
-          class="business-image"
+          class="business-image w-full h-48 object-cover rounded-md border"
         />
       </div>
 
@@ -32,22 +32,22 @@
         <img
           :src=" imagePreview ||tm30Business.visaPage || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
-          class="business-image"
+          class="business-image w-full h-48 object-cover rounded-md border"
         />
       </div>
 
       <div class="form-group">
         <label>User Name:</label>
-        <input v-model="tm30Business.userName" type="text" readonly />
+        <input v-model="tm30Business.userName" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
       </div>
 
       <div class="form-group">
         <label>Contact Number:</label>
-        <input v-model="tm30Business.contactNumber" type="text" readonly />
+        <input v-model="tm30Business.contactNumber" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
       </div>
 
-      <button @click="markAsInProgress">On Progress</button>
-      <button @click="goBackHome">Go Back Home</button>
+      <button @click="markAsInProgress" class="px-4 py-2 bg-yellow-500 text-yellow-950 font-semibold rounded-md hover:bg-yellow-700 transition">On Progress</button>
+      <button @click="goBackHome" class="px-4 py-2 bg-yellow-500 text-yellow-950 font-semibold rounded-md hover:bg-yellow-700 transition">Go Back Home</button>
     </div>
   </div>
 </template>

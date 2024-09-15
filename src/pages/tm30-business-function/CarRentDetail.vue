@@ -1,15 +1,15 @@
 <template>
-  <div class="car-order-details">
+  <div class="car-order-details max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
     <!-- Show loading or error messages -->
-    <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="loading" class="text-center text-xl">Loading...</div>
+    <div v-if="error" class="text-center text-red-500">{{ error }}</div>
 
     <!-- Display the details once the data is loaded -->
     <div v-if="!loading && !error">
-      <h1>Car Order Details</h1>
+      <h1 class="text-2xl font-bold mb-6">Car Order Details</h1>
 
       <!-- Car Order Information -->
-      <div class="order-info">
+      <div class="mb-6">
         <p><strong>Order SysKey:</strong> {{ carOrder.sysKey }}</p>
         <p><strong>Status:</strong> {{ carOrder.status }}</p>
         <p><strong>Pick Up Date:</strong> {{ formatDate(carOrder.pickUpDate) }}</p>
@@ -18,14 +18,16 @@
         <p><strong>To Location:</strong> {{ carOrder.toLocation }}</p>
         <p><strong>Customer Phone Number:</strong> {{ carOrder.customerPhoneNumber }}</p>
         <p><strong>Price:</strong> {{ carOrder.price }}</p>
-
       </div>
 
       <!-- Car Information -->
-      <div class="car-info">
-        <h2>Car Information</h2>
-        <img :src="carOrder.carImage || defaultImage" alt="Car Image" class="car-image" />
-                
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold mb-4">Car Information</h2>
+        <img
+          :src="carOrder.carImage || defaultImage"
+          alt="Car Image"
+          class="w-36 h-36 rounded-full object-cover mb-4"
+        />
         <p><strong>Car Name:</strong> {{ carOrder.carName }}</p>
         <p><strong>Owner Name:</strong> {{ carOrder.ownerName }}</p>
         <p><strong>Car No:</strong> {{ carOrder.carNo }}</p>
@@ -35,51 +37,79 @@
         <p><strong>Driver Phone Number:</strong> {{ carOrder.driverPhoneNumber }}</p>
         <p><strong>Car Color:</strong> {{ carOrder.carColor }}</p>
       </div>
-      <button @click="updateCarOrder" class="update-btn">Update Car Order</button>
+
+      <!-- Update button -->
+      <button
+        @click="updateCarOrder"
+        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-500 transition"
+      >
+        Update Car Order
+      </button>
+
       <!-- User Information -->
-      <div class="user-info">
-        <h2>User Information</h2>
-        <img :src="carOrder.userImage || defaultImage" alt="User Image" class="user-image" />
+      <div class="my-6">
+        <h2 class="text-xl font-semibold mb-4">User Information</h2>
+        <img
+          :src="carOrder.userImage || defaultImage"
+          alt="User Image"
+          class="w-36 h-36 rounded-full object-cover mb-4"
+        />
         <p><strong>User Name:</strong> {{ carOrder.userName }}</p>
       </div>
 
       <!-- Button to Open Car List Modal -->
-      <button @click="openCarModal">Choose Car</button>
+      <button
+        @click="openCarModal"
+        class="mt-6 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600"
+      >
+        Choose Car
+      </button>
+
       <!-- Modal for Car List -->
-      <div v-if="showModal" class="modal">
-        <div class="modal-content">
-          <h2>Select Car</h2>
+      <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-md w-full max-w-lg">
+          <h2 class="text-xl font-semibold mb-4">Select Car</h2>
 
           <!-- Search Box -->
           <input
             v-model="searchString"
             @input="fetchCarList"
             type="text"
-            class="search-bar"
+            class="w-full p-2 border border-gray-300 rounded-md mb-4"
             placeholder="Search by car name, owner, or number"
           />
 
           <!-- Car List Table -->
-          <table class="car-list">
+          <table class="w-full text-left border-collapse">
             <thead>
-              <tr>
-                <th>Car Name</th>
-                <th>Owner</th>
-                <th>Car No</th>
-                <th>Action</th>
+              <tr class="bg-gray-100">
+                <th class="p-2 border">Car Name</th>
+                <th class="p-2 border">Owner</th>
+                <th class="p-2 border">Car No</th>
+                <th class="p-2 border">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="car in carList" :key="car.id" @click="selectCar(car)">
-                <td>{{ car.carName }}</td>
-                <td>{{ car.ownerName }}</td>
-                <td>{{ car.carNo }}</td>
+              <tr
+                v-for="car in carList"
+                :key="car.id"
+                @click="selectCar(car)"
+                class="hover:bg-gray-100 cursor-pointer"
+              >
+                <td class="p-2 border">{{ car.carName }}</td>
+                <td class="p-2 border">{{ car.ownerName }}</td>
+                <td class="p-2 border">{{ car.carNo }}</td>
               </tr>
             </tbody>
           </table>
 
           <!-- Close Modal -->
-          <button @click="closeModal">Close</button>
+          <button
+            @click="closeModal"
+            class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 transition"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>

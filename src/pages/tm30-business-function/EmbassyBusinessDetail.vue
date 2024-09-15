@@ -1,57 +1,57 @@
 <template>
-  <div class="embassy-business-details">
-    <h1>Embassy Business Details</h1>
+  <div class="max-w-xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Embassy Business Details</h1>
 
-    <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">{{ error }}</div>
-    <div v-if="success" class="success">{{ success }}</div>
+    <div v-if="loading" class="loading text-center text-blue-500 font-semibold">Loading...</div>
+    <div v-if="error" class="error text-center text-red-500">{{ error }}</div>
+    <div v-if="success" class="success text-center text-green-500">{{ success }}</div>
 
-    <div v-if="embassyLetter" class="details-form">
-      <div class="form-group">
-          <label>Order Id:</label>
-          <input v-model="embassyLetter.order_id" type="text" readonly />
+    <div v-if="embassyLetter" class="details-form space-y-4">
+      <div class="form-group ">
+          <label class="block text-gray-700 font-medium mb-1">Order Id:</label>
+          <input v-model="embassyLetter.order_id" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
         </div>
 
         <div class="form-group">
-          <label>VisaType:</label>
-          <input v-model="embassyLetter.visaType" type="text"  readonly/>
+          <label class="block text-gray-700 font-medium mb-1">VisaType:</label>
+          <input v-model="embassyLetter.visaType" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed"  readonly/>
         </div>
       
       <div class="form-group">
-        <label>Passport Bio:</label>
+        <label class="block text-gray-700 font-medium mb-1">Passport Bio:</label>
         <img
           :src=" imagePreview ||embassyLetter.passportBio || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
-          class="business-image"
+          class="business-image w-full h-48 object-cover rounded-md border"
         />
       </div>
 
       <div class="form-group">
-        <label>Visa Preview:</label>
+        <label class="block text-gray-700 font-medium mb-1">Visa Preview:</label>
         <img
           :src=" imagePreview ||embassyLetter.visaPage || 'https://example.com/default-business-image.jpg'"
           alt="Business Image"
-          class="business-image"
+          class="business-image w-full h-48 object-cover rounded-md border"
         />
       </div>
 
       <div class="form-group">
-        <label>User Name:</label>
-        <input v-model="embassyLetter.userName" type="text" readonly />
+        <label class="block text-gray-700 font-medium mb-1">User Name:</label>
+        <input v-model="embassyLetter.userName" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
       </div>
 
       <div class="form-group">
-        <label>Contact Number:</label>
-        <input v-model="embassyLetter.contactNumber" type="text" readonly />
+        <label class="block text-gray-700 font-medium mb-1">Contact Number:</label>
+        <input v-model="embassyLetter.contactNumber" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
       </div>
 
       <div class="form-group">
-        <label>Status:</label>
-        <input v-model="embassyLetter.status" type="text" readonly />
+        <label class="block text-gray-700 font-medium mb-1">Status:</label>
+        <input v-model="embassyLetter.status" type="text" class="w-full p-2 border rounded-md bg-gray-100 cursor-not-allowed" readonly />
       </div>
 
-      <button @click="markAsInProgress">On Progress</button>
-      <button @click="goBackHome">Go Back Home</button>
+      <button @click="markAsInProgress" class="px-4 py-2 bg-yellow-500 text-yellow-950 font-semibold rounded-md hover:bg-yellow-700 transition">On Progress</button>
+      <button @click="goBackHome" class="px-4 py-2 bg-yellow-500 text-yellow-950 font-semibold rounded-md hover:bg-yellow-700 transition">Go Back Home</button>
     </div>
   </div>
 </template>

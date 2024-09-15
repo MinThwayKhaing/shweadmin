@@ -1,27 +1,30 @@
 <template>
-  <div class="translator-order-details">
+  <div class="translator-order-details max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg">
     <!-- Show a loading message while data is being fetched -->
-    <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">{{ error }}</div>
+    <div v-if="loading" class="loading text-center text-blue-500 font-semibold">Loading...</div>
+    <div v-if="error" class="error text-center text-red-500">{{ error }}</div>
 
     <!-- Display the details once the data is loaded -->
     <div v-if="!loading && !error">
-      <h1>Translator Order Details</h1>
+      <h1 class="text-2xl font-bold text-gray-800 mb-6">Translator Order Details</h1>
 
       <!-- Translator Info -->
-      <div class="translator-info">
-        <!-- Use default image if translatorImage is null or empty -->
+      <div class="translator-info mb-8">
         <img
           :src="order[15] ? order[15] : defaultImage"
           alt="User Image"
-          class="translator-image"
+          class="translator-image w-24 h-24 object-cover rounded-full border mb-4"
         />
-        <h2>{{ order[12] }}</h2>
-        <a :href="order[11]" target="_blank">Chat with Translator</a>
+        <h2 class="text-lg font-semibold text-gray-700">{{ order[12] }}</h2>
+        <a
+          :href="order[11]"
+          target="_blank"
+          class="text-blue-500 hover:underline"
+        >Chat with Translator</a>
       </div>
 
       <!-- Order Info -->
-      <div class="order-info">
+      <div class="order-info space-y-4">
         <p><strong>Order Status:</strong> {{ order[1] }}</p>
         <p><strong>From Date:</strong> {{ formatDate(order[2]) }}</p>
         <p><strong>To Date:</strong> {{ formatDate(order[3]) }}</p>
@@ -30,46 +33,62 @@
         <p><strong>Phone Number:</strong> {{ order[6] }}</p>
         <p><strong>Used For:</strong> {{ order[7] }}</p>
         <p><strong>Meeting Time:</strong> {{ order[8] }}</p>
+      </div>
 
-        <!-- Translator Info -->
-        <div class="translator-info">
-          <!-- Use default image if translatorImage is null or empty -->
-          <img
-            :src="order[10] ? order[10] : defaultImage"
-            alt="Translator Image"
-            class="translator-image"
+      <!-- Translator Info -->
+      <div class="translator-info mt-8">
+        <img
+          :src="order[10] ? order[10] : defaultImage"
+          alt="Translator Image"
+          class="translator-image w-24 h-24 object-cover rounded-full border mb-4"
+        />
+        <h2 class="text-lg font-semibold text-gray-700">{{ order[9] }}</h2>
+        <a
+          :href="order[11]"
+          target="_blank"
+          class="text-blue-500 hover:underline"
+        >Chat with Translator</a>
+        <button
+          @click="openTranslatorModal"
+          class="ml-4 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600 mt-4"
+        >
+          Choose Translator
+        </button>
+      </div>
+
+      <!-- Update button -->
+      <button
+        @click="updateOrder"
+        class="mt-6 px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600"
+      >
+        Update Order
+      </button>
+
+      <!-- Translator Modal -->
+      <div v-if="showModal" class="modal fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
+          <h2 class="text-xl font-semibold mb-4">Select Translator</h2>
+
+          <!-- Search Bar -->
+          <input
+            v-model="searchString"
+            @input="loadTranslator"
+            type="text"
+            class="w-full p-2 border rounded-md mb-4"
+            placeholder="Search translator by name"
           />
-          <h2>{{ order[9] }}</h2>
-          <a :href="order[11]" target="_blank">Chat with Translator</a>
-          <button @click="openTranslatorModal">Choose Translator</button>
-          <!-- Button to open modal -->
-        </div>
-        <!-- Update button -->
-        <button @click="updateOrder">Update Order</button>
-        <!-- Translator Modal -->
-        <div v-if="showModal" class="modal">
-          <div class="modal-content">
-            <h2>Select Translator</h2>
 
-            <!-- Search Bar -->
-            <input
-              v-model="searchString"
-              @input="loadTranslator"
-              type="text"
-              class="search-bar"
-              placeholder="Search translator by name"
-            />
-
-            <!-- Table -->
-            <table class="translator-table">
+          <!-- Table -->
+          <div class="overflow-x-auto">
+            <table class="translator-table w-full table-auto">
               <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Image</th>
-                  <th>Translator Name</th>
-                  <th>Language</th>
-                  <th>Specialist</th>
-                  <th>ChatLink</th>
+                <tr class="bg-gray-100">
+                  <th class="p-2 text-left">#</th>
+                  <th class="p-2 text-left">Image</th>
+                  <th class="p-2 text-left">Translator Name</th>
+                  <th class="p-2 text-left">Language</th>
+                  <th class="p-2 text-left">Specialist</th>
+                  <th class="p-2 text-left">ChatLink</th>
                 </tr>
               </thead>
               <tbody>
@@ -77,31 +96,37 @@
                   v-for="(translator, index) in translators"
                   :key="translator.id"
                   @click="selectTranslator(translator)"
+                  class="border-t hover:bg-gray-50 cursor-pointer"
                 >
-                  <td>{{ index + 1 }}</td>
-                  <td>
+                  <td class="p-2">{{ index + 1 }}</td>
+                  <td class="p-2">
                     <img
                       :src="translator.image || defaultImage"
                       alt="Translator Image"
-                      class="translator-list-image"
+                      class="w-12 h-12 object-cover rounded-full"
                     />
                   </td>
-                  <!-- Auto-increment number -->
-                  <td>{{ translator.name }}</td>
-                  <td>{{ translator.language }}</td>
-                  <td>{{ translator.specialist }}</td>
-                  <td>{{ translator.chatLink }}</td>
+                  <td class="p-2">{{ translator.name }}</td>
+                  <td class="p-2">{{ translator.language }}</td>
+                  <td class="p-2">{{ translator.specialist }}</td>
+                  <td class="p-2">{{ translator.chatLink }}</td>
                 </tr>
               </tbody>
             </table>
-
-            <button @click="closeModal">Close</button>
           </div>
+
+          <button
+            @click="closeModal"
+            class="mt-6 px-4 py-2 bg-red-500 text-white font-semibold rounded-md hover:bg-red-600"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import {
