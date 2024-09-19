@@ -57,3 +57,11 @@
   margin: 0;
   font-weight: normal;
 }
+
+button, input, optgroup, select, textarea 
+{
+  border: 1px solid #696969;
+}
+input[type="file"] {
+  border: none;
+}

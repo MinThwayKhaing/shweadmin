@@ -125,29 +125,29 @@ export default {
           icon: 'icon-business',
           items: [
             {
-              title: 'TM30',
+              title: 'ServicesList',
               icon: 'icon-tm30',
               subNav: [
-                { title: 'Create', route: '/tm30/create' },
+                // { title: 'Create', route: '/tm30/create' },
                 { title: 'List', route: '/tm30businesslist' }
               ]
             },
-            {
-              title: '90 Day Report',
-              icon: 'icon-report-90day',
-              subNav: [
-                { title: 'Create', route: '/report90day/create' },
-                { title: 'List', route: '/report90daybusinesslist' }
-              ]
-            },
-            {
-              title: 'Embassy Letter',
-              icon: 'icon-embassy-letter',
-              subNav: [
-                { title: 'Create', route: '/embassyletter/create' },
-                { title: 'List', route: '/embassyletterbusinesslist' }
-              ]
-            }
+            // {
+            //   title: '90 Day Report',
+            //   icon: 'icon-report-90day',
+            //   subNav: [
+            //     { title: 'Create', route: '/report90day/create' },
+            //     { title: 'List', route: '/report90daybusinesslist' }
+            //   ]
+            // },
+            // {
+            //   title: 'Embassy Letter',
+            //   icon: 'icon-embassy-letter',
+            //   subNav: [
+            //     { title: 'Create', route: '/embassyletter/create' },
+            //     { title: 'List', route: '/embassyletterbusinesslist' }
+            //   ]
+            // }
           ]
         }
         
