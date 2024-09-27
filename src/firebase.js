@@ -1,9 +1,10 @@
-// Import the functions you need from the SDKs
+// src/firebase.js
 import { initializeApp } from 'firebase/app'
-
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 
-// Firebase configuration object
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyA730H6parskRzJHYBabfW257qKipTg580',
   authDomain: 'shweapp-96bab.firebaseapp.com',
@@ -16,38 +17,23 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-
-// Initialize Firebase Cloud Messaging and request notification permission
 const messaging = getMessaging(app)
 
-// Function to request notification permission and get the Firebase token
-export const requestNotificationPermission = async () => {
-  try {
-    // Request permission to send notifications
-    await Notification.requestPermission()
-    console.log('Notification permission granted.')
-
-    // Get the Firebase token for messaging
-    const token = await getToken(messaging, {
-      vapidKey:
-        ' BJYXln9oYd2v5NJReG-Buks8eEI9AZjfVy3Qt0HOHuGUuqtyI20W9Q8ChKVOq3UuogzsgAQ_TgsSzKFJ7ld64iw ' // Add your Firebase VAPID key here
-    })
-
-    if (token) {
-      console.log('Firebase Token:', token)
-      return token // You can send this token to your Spring Boot server
-    } else {
-      console.log('No registration token available. Request permission to generate one.')
-    }
-  } catch (err) {
-    console.error('Error getting notification token:', err)
-  }
+// Function to show toast notifications
+const showToast = (title, body) => {
+  toast(`${title}: ${body}`, {
+    autoClose: 5000, // Duration for toast notification
+    position: toast.POSITION.TOP_RIGHT
+  })
 }
 
-// Handle incoming messages when the web app is open
+// Handle incoming messages
 onMessage(messaging, (payload) => {
   console.log('Message received: ', payload)
-  // You can display the notification here in your Vue.js app UI
+  // Check if the payload contains a notification
+  if (payload.notification) {
+    showToast(payload.notification.title, payload.notification.body)
+  }
 })
 
-export default app
+export { messaging, getToken }
