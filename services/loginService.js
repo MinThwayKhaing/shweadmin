@@ -21,3 +21,26 @@ export async function login(phoneNumber, password) {
 
   // "baseurl": "https://api.shweapps.com/api/v1/"
 }
+
+export async function sendNotificationToken(notifToken) {
+  try {
+    const token = sessionStorage.getItem('authToken')
+    if (!token) {
+      throw new Error('Authentication token is missing. Please log in.')
+    }
+    await axios.post(
+      `${config.baseurl}auth/save-notif-token`,
+      {
+        notifToken: notifToken
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+    console.log('Notification token sent to backend successfully.')
+  } catch (error) {
+    console.error('Failed to send notification token:', error)
+  }
+}

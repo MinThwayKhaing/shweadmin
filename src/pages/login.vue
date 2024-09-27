@@ -14,7 +14,7 @@
       <p v-if="errorMessage">{{ errorMessage }}</p>
     </form>
   </div>
-</template> -->
+</template> --> 
 
 <template>
   <div class="h-screen w-screen flex items-center justify-center bg-gray-100">
@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import { login } from '../../services/loginService'
-
+import { login,sendNotificationToken } from '../../services/loginService'
+import { messaging, getToken } from '../firebase'; // Import messaging and necessary functions
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
@@ -57,10 +57,29 @@ export default {
         sessionStorage.setItem('authToken', data.token)
         sessionStorage.setItem('refreshToken', data.refreshToken)
         sessionStorage.setItem('user', JSON.stringify(data.user))
+        const notifToken = await this.getToken();
+        if (notifToken) {
+      // Send notifToken to backend
+      await sendNotificationToken(notifToken);
+    }
         this.$router.push({ name: 'home' })
       } catch (error) {
         this.errorMessage = error
       }
+    },
+    getToken() {
+      getToken(messaging, { vapidKey: 'BJYXln9oYd2v5NJReG-Buks8eEI9AZjfVy3Qt0HOHuGUuqtyI20W9Q8ChKVOq3UuogzsgAQ_TgsSzKFJ7ld64iw' })
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log("Token received:", currentToken);
+            sendNotificationToken(currentToken)
+          } else {
+            console.error('No registration token available. Request permission to generate one.');
+          }
+        })
+        .catch((err) => {
+          console.error('An error occurred while retrieving token. ', err);
+        });
     }
   }
 }
