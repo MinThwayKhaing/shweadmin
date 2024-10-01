@@ -2,42 +2,64 @@
 <template>
   <div class="home">
     <div class="home-content">
-      <header class="home-header bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-slate-950 font-semibold shadow-lg">
-        <h1>Hello, {{ userName }}!</h1>
-        <p>{{ currentDate }}</p>
-      </header>
-      <section class="overview">
-        <div class="card" v-for="card in overviewCards" :key="card.title">
-          <h3>{{ card.title }}</h3>
-          <p>{{ card.value }}</p>
-          <p>{{ card.subtext }}</p>
-        </div>
-      </section>
       <section class="detailed-section">
-        <!-- Add detailed sections here -->
+        <h3 class="user-list-heading">User List</h3>
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Username</th>
+              <th>Phone Number</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(user, index) in users" :key="user.username">
+              <td>{{ index + 1 }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.phoneNumber }}</td>
+              <td>{{ user.role }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" @click="editUser(user)">Edit</button>
+                  <button class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" @click="deleteUser(user)">Delete</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </div>
   </div>
 </template>
 
+
+
 <script>
+import { getAllUsers } from '../../services/UserService';
+
 export default {
   data() {
     return {
-      userName: 'Faiqoh Brilanti',
-      currentDate: 'Tuesday, 5 June 2024',
-      overviewCards: [
-        { title: 'Walking', value: '1,167 steps', subtext: 'Yesterday was 1,181 steps' },
-        {
-          title: 'Stretching',
-          value: '12 minutes',
-          subtext: 'Yesterday was 15 minutes of stretching'
-        },
-        { title: 'Running', value: '4.0 miles', subtext: 'Yesterday was 3.2 miles in 30 minutes' }
-      ]
+      users: []
+    };
+  },
+  created() {
+    this.fetchUsers();
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const data = await getAllUsers();
+        this.users = data;
+      } catch (error) {
+        console.error('Error fetching users:', error.message);
+        // You may also want to handle the error, e.g., show a notification to the user
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -60,6 +82,15 @@ export default {
   border-radius: 8px;
 }
 
+.detailed-section {
+  text-align: center; /* Center align the section content */
+}
+
+.user-list-heading {
+  font-size: 24px; /* Larger font size for the heading */
+  margin-bottom: 20px; /* Add some space below the heading */
+}
+
 .overview {
   display: flex;
   justify-content: space-between;
@@ -78,4 +109,55 @@ export default {
 .card:last-child {
   margin-right: 0;
 }
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the rounded corners */
+}
+
+.user-table th, .user-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #f2f2f2;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
+
+.user-table td {
+  background-color: #fff;
+  color: #555;
+}
+
+.user-table tbody tr:nth-child(odd) td {
+  background-color: #f9f9f9;
+}
+
+.action-buttons {
+  display: flex; /* Use flexbox to align items */
+  justify-content: center; /* Center the buttons */
+  gap: 10px; /* Add some space between buttons */
+}
+
+
+.action-btn {
+  padding: 10px 15px; /* Adjust the padding for a better look */
+  border: none; /* Remove the default border */
+  border-radius: 5px; /* Round the corners */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions for hover effects */
+}
+
+/* Style for Edit button */
+
+
+
 </style>

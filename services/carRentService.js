@@ -74,7 +74,7 @@ export async function saveCarRent(formData) {
   }
 }
 
-export async function CarRentTranslator(id) {
+export async function deleteCarRent(id) {
   try {
     const token = sessionStorage.getItem('authToken')
 

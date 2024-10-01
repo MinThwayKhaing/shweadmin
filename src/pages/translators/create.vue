@@ -1,44 +1,63 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="translator-create">
-    <h1>Create New Translator</h1>
+    <h1 class="text-2xl font-bold mb-4">Create New Translator</h1>
 
     <div v-if="loading" class="loading">Loading...</div>
-    <div v-if="error" class="error">{{ error }}</div>
-    <div v-if="success" class="success">{{ success }}</div>
+    <div v-if="error" class="error text-red-500 mb-4">{{ error }}</div>
+    <div v-if="success" class="success text-green-500 mb-4">{{ success }}</div>
 
     <div class="details-form">
       <form @submit.prevent="createTranslator">
         <!-- Image Upload -->
-        <div class="form-group">
-          <label>Upload Image:</label>
-          <input type="file" @change="handleImageUpload" />
+        <div class="form-group mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image:</label>
+          <input type="file" @change="handleImageUpload" class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" />
           <img
             v-if="imagePreview"
             :src="imagePreview"
             alt="Translator Image"
-            class="translator-image"
+            class="translator-image mt-2"
           />
         </div>
 
-        <div class="form-group">
-          <label>Name:</label>
-          <input v-model="translator.name" type="text" required />
-        </div>
-        <div class="form-group">
-          <label>Language:</label>
-          <input v-model="translator.language" type="text" required />
-        </div>
-        <div class="form-group">
-          <label>Specialist:</label>
-          <input v-model="translator.specialist" type="text" required />
+        <div class="form-group mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+          <input v-model="translator.name" type="text" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" />
         </div>
 
-        <button type="submit">Create Translator</button>
+        <div class="form-group mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Language:</label>
+          <select v-model="translator.language" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+            <option value="" disabled>Select Language</option>
+            <option value="Thai">Thai</option>
+            <option value="English">English</option>
+            <option value="Chinese">Chinese</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Specialist:</label>
+          <select v-model="translator.specialist" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+            <option value="" disabled>Select Specialist</option>
+            <option value="hospital">Hospital</option>
+            <option value="travel & shopping">Travel & Shopping</option>
+            <option value="police case">Police Case</option>
+            <option value="court">Court</option>
+            <option value="business">Business</option>
+            <option value="government office & immigration">Government office & Immigration</option>
+          </select>
+        </div>
+
+        <button type="submit" class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+          Create Translator
+        </button>
       </form>
     </div>
   </div>
 </template>
+
+
 
 <script>
 import { saveTranslator } from '../../../services/translatorService'
@@ -114,8 +133,10 @@ export default {
   margin-bottom: 5px;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   width: 100%;
+  max-width: 300px; /* Adjust the max-width as needed */
   padding: 8px;
   box-sizing: border-box;
 }
@@ -145,3 +166,4 @@ export default {
   font-weight: bold;
 }
 </style>
+
