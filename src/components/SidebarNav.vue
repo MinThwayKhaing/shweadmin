@@ -14,10 +14,13 @@
     <!-- Main Navigation Items -->
     <div v-if="!isCollapsed">
       <div v-for="(mainNav, mainIndex) in mainNavItems" :key="mainIndex" class="mb-4">
-        <div @click="toggleMainNav(mainIndex)" class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+        <div 
+          @click="mainNav.route ? navigate(mainNav.route) : mainNav.action ? handleAction(mainNav.action) : toggleMainNav(mainIndex)"
+          class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl"
+        >
           <span :class="mainNav.icon"></span> {{ mainNav.title }}
         </div>
-        <div v-if="activeMainNav === mainIndex" class="nav-item my-5">
+        <div v-if="mainNav.items && activeMainNav === mainIndex" class="nav-item my-5">
           <div v-for="(item, index) in mainNav.items" :key="index" class="nav-sub-item">
             <div @click="toggleSubNav(index)" class="cursor-pointer p-2 rounded-lg mb-1 text-yellow-950 border border-transparent hover:border-yellow-950 transition ease-in duration-150">
               <span :class="item.icon"></span> {{ item.title }}
@@ -46,6 +49,7 @@
   </nav>
 </template>
 
+
 <script>
 export default {
   data() {
@@ -57,6 +61,12 @@ export default {
       activeSubNav: null,
       isCollapsed: false, // State to manage sidebar collapse
       mainNavItems: [
+        {
+          title: 'Home',
+          route: '/home',
+          icon: 'icon-home'
+        }
+        ,
         {
           title: 'Option',
           icon: 'icon-options',
@@ -149,7 +159,12 @@ export default {
             //   ]
             // }
           ]
-        }
+        },
+        {
+        title: 'Logout',
+        action: 'logout',
+        icon: 'icon-logout'
+      }
         
       ],
       activeRoute: ''
@@ -178,7 +193,18 @@ export default {
     },
     toggleSidebar() {
       this.isCollapsed = !this.isCollapsed
+    },
+    navigate(route) {
+    this.$router.push(route)
+    },
+    handleAction(action) {
+    if (action === 'logout') {
+      // Implement your logout logic here
+      // For example, clearing session storage and redirecting to the login page
+      sessionStorage.clear()
+      this.$router.push('/')
     }
+  }
   }
 }
 </script>

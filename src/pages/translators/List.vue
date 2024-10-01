@@ -23,28 +23,35 @@
         <input type="number" v-model.number="size" @change="loadTranslators" />
       </label>
     </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Language</th>
-          <th>Specialist</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="translator in translators" :key="translator.id">
-          <td>{{ translator.name }}</td>
-          <td>{{ translator.language }}</td>
-          <td>{{ translator.specialist }}</td>
-          <td>
-            <button @click="viewDetails(translator.id)">View Details</button>
-            <button @click="deleteTranslator(translator.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <section class="detailed-section">
+      <table class='translator-table'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Language</th>
+            <th>Specialist</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="translator in translators" :key="translator.id" @click="checkData(translator)">
+            <td>{{ translator.name }}</td>
+            <td>{{ translator.language }}</td>
+            <td>{{ translator.specialist }}</td>
+            <td>
+              <div class='action-buttons'>
+                <button @click.stop="viewDetails(translator.id)" class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+                  View Details
+                </button>
+                <button @click.stop="deleteTranslator(translator.id)" class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
@@ -95,6 +102,13 @@ export default {
           alert(err.message) // Show the error message in an alert box
         }
       }
+    },
+    checkData(translator) {
+      if (translator) {
+        alert(`Data is present for ${translator.name}`);
+      } else {
+        alert('Data is not present.');
+      }
     }
   }
 }
@@ -138,7 +152,7 @@ th,
 td {
   border: 1px solid #ddd;
   padding: 8px;
-  text-align: left;
+  text-align: center; /* Align text to center */
 }
 
 th {
@@ -158,5 +172,32 @@ button {
   color: red;
   text-align: center;
   font-weight: bold;
+}
+
+.translator-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the rounded corners */
+}
+
+.action-buttons {
+  display: flex; /* Use flexbox to align items */
+  justify-content: center; /* Center the buttons */
+  gap: 10px; /* Add some space between buttons */
+}
+
+.action-btn {
+  padding: 10px 15px; /* Adjust the padding for a better look */
+  border: none; /* Remove the default border */
+  border-radius: 5px; /* Round the corners */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions for hover effects */
+}
+
+.detailed-section {
+  text-align: center; /* Center align the section content */
 }
 </style>

@@ -146,22 +146,36 @@ export async function deleteTranslator(translatorId) {
 }
 
 // Get translator by ID
-export async function getTranslatorById(id) {
-  try {
-    const token = getAuthToken()
-    if (!token) {
-      throw new Error('Authentication token is missing. Please log in.')
-    }
+// export async function getTranslatorById(id) {
+//   try {
+//     const token = getAuthToken()
+//     if (!token) {
+//       throw new Error('Authentication token is missing. Please log in.')
+//     }
 
-    const response = await axios.get(`${config.baseurl}translator/getTranslatorById/${id}`, {
+//     const response = await axios.get(`${config.baseurl}translator/getTranslatorById/${id}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     })
+
+//     return response.data // Return the translator by ID
+//   } catch (err) {
+//     console.error('Failed to load translator by ID:', err)
+//     throw new Error(err.response?.data?.message || 'Failed to load translator by ID')
+//   }
+// }
+
+export async function getTranslatorById(id) {
+  
+    const token = sessionStorage.getItem('authToken'); 
+    return await axios.get(`${config.baseurl}translator/getTranslatorById/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    })
+    });
+    
 
-    return response.data // Return the translator by ID
-  } catch (err) {
-    console.error('Failed to load translator by ID:', err)
-    throw new Error(err.response?.data?.message || 'Failed to load translator by ID')
-  }
+  
 }
+

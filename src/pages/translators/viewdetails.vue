@@ -53,12 +53,15 @@ import { getTranslatorById, updateTranslator } from '../../../services/translato
 export default {
   data() {
     return {
-      translator: null,
-      image: null, // To hold the uploaded image
-      imagePreview: null, // To hold the image preview URL
-      loading: false,
-      error: null,
-      success: null // To hold the success message
+      form: {
+        translator: null,
+        image: null, // To hold the uploaded image
+        imagePreview: null, // To hold the image preview URL
+        loading: false,
+        error: null,
+        success: null // To hold the success message
+      }
+      
     }
   },
   created() {
