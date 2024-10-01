@@ -2,25 +2,27 @@
 <template>
   <div class="translators-list">
     <SidebarNav />
-    <h1>Translators List</h1>
+    <h1 class="text-2xl text-black">Translator List</h1>
 
     <!-- Search Box -->
     <input
       v-model="searchString"
       placeholder="Search translators..."
       @input="loadTranslators"
-      class="search-box"
+      class="search-box w-full max-w-md mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
     />
 
     <!-- Pagination Controls -->
-    <div class="pagination-controls">
+    <div class="mb-5 flex gap-5">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadTranslators" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="page" @change="loadTranslators" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadTranslators" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="size" @change="loadTranslators" />
       </label>
     </div>
     <section class="detailed-section">
@@ -34,7 +36,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="translator in translators" :key="translator.id" @click="checkData(translator)">
+          <tr v-for="translator in translators" :key="translator.id">
             <td>{{ translator.name }}</td>
             <td>{{ translator.language }}</td>
             <td>{{ translator.specialist }}</td>

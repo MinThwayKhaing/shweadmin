@@ -1,25 +1,27 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="car-rent-list">
-    <h1>CarRent List</h1>
+    <h1 class="text-2xl text-black">Car List</h1>
 
     <!-- Search Box -->
     <input
       v-model="searchString"
       placeholder="Search Cars..."
       @input="loadCarRent"
-      class="search-box"
+      class="search-box w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
     />
 
     <!-- Pagination Controls -->
-    <div class="pagination-controls">
+    <div class="mb-5 flex gap-5">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadCarRent" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="page" @change="loadCarRent" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadCarRent" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="size" @change="loadCarRent" />
       </label>
     </div>
     <section class="detailed-section">
