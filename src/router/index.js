@@ -11,6 +11,11 @@ import CarViewDetails from '../pages/carRent/viewdetails.vue'
 import visaExtensionTypeCreate from '@/pages/visa-extension-type/visa-extension-type-create.vue'
 import visaExtensionTypeEdit from '@/pages/visa-extension-type/visa-extension-type-edit.vue'
 import visaExtensionTypeList from '@/pages/visa-extension-type/visa-extension-type-list.vue'
+
+import articleCreate from '@/pages/article/create.vue'
+import articleEdit from '@/pages/article/viewdetails.vue'
+import articleList from '@/pages/article/List.vue'
+
 import EmbassyLetterTypeCreate from '@/pages/embassy-letter-type/embassy-letter-type-create.vue'
 import EmbassyLetterTypeEdit from '@/pages/embassy-letter-type/embassy-letter-type-edit.vue'
 import EmbassyLetterTypeList from '@/pages/embassy-letter-type/embassy-letter-type-list.vue'
@@ -19,7 +24,6 @@ import editReport90DayVisaType from '@/pages/Report90day-visa-type/editReport90D
 import listReport90DayVisaType from '@/pages/Report90day-visa-type/listReport90DayVisaType.vue'
 import tm30businesslist from '@/pages/tm30-business-function/List.vue'
 import translatorBusinessDetail from '@/pages/tm30-business-function/TranslatorDetail.vue'
-import carBusinessDetail from '@/pages/tm30-business-function/CarRentDetail.vue'
 import tm30BusinessDetail from '@/pages/tm30-business-function/Tm30BusinessDetail.vue'
 import visaServiceBusinessDetail from '@/pages/tm30-business-function/VisaServiceBusinessDetail.vue'
 import report90DaysBusinessDetail from '@/pages/tm30-business-function/Report90DaysBusinessDetail.vue'
@@ -48,6 +52,21 @@ const routes = [
     path: '/visa-extension-type/create',
     name: 'visa-extension-type-create',
     component: visaExtensionTypeCreate
+  },
+  {
+    path: '/article/create',
+    name: 'article-create',
+    component: articleCreate
+  },
+  {
+    path: '/article/list',
+    name: 'article-list',
+    component: articleList
+  },
+  {
+    path: '/article/:id/edit',
+    name: 'article-edit',
+    component: articleEdit
   },
   {
     path: '/visa-extension-type/list',
@@ -98,11 +117,6 @@ const routes = [
     path: '/tm30business/:sysKey/translator-business-detail',
     name: 'translator-business-details',
     component: translatorBusinessDetail
-  },
-  {
-    path: '/tm30business/:sysKey/car-business-detail',
-    name: 'car-details',
-    component: carBusinessDetail
   },
   {
     path: '/tm30business/:sysKey/tm30-business-detail',

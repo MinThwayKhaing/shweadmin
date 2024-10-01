@@ -23,9 +23,10 @@
       </label>
     </div>
 
-    <table>
+    <table  class="styled-table">
       <thead>
         <tr>
+
           <th>CarName</th>
           <th>OwnerName</th>
           <th>CarNo</th>
@@ -54,8 +55,10 @@
           <td>{{ carRent.carType }}</td>
 
           <td>
-            <button @click="viewDetails(carRent.carId)">View Details</button>
-            <button @click="CarRentTranslator(carRent.carId)">Delete</button>
+            <button 
+            class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
+            @click="viewDetails(carRent.carId)">View Details</button>
+            <button class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click="CarRentTranslator(carRent.carId)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -98,6 +101,7 @@ export default {
       }
     },
     viewDetails(carRentId) {
+      console.log("Navigating with carRentId: ", carRentId);
       this.$router.push({ name: 'car-details', params: { id: carRentId } })
     },
     async CarRentTranslator(carRentId) {
@@ -134,6 +138,41 @@ export default {
   gap: 20px;
 }
 
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: #fff;
+  
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  
+}
+
+.styled-table th {
+  background-color: #a16207;
+  color:#fef9c3;
+  font-weight: bold;
+}
+
+.styled-table tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #fef9c3;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #ca8a04;
+  cursor: pointer;
+}
 .pagination-controls label {
   display: flex;
   align-items: center;

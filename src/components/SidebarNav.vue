@@ -95,6 +95,14 @@ export default {
               ]
             },
             {
+              title: 'Articles',
+              icon: 'icon-visa',
+              subNav: [
+                { title: 'Create', route: '/article/create' },
+                { title: 'List', route: '/article/list' }
+              ]
+            },
+            {
               title: 'Visa Extension Type',
               icon: 'icon-visa-extension-type',
               subNav: [

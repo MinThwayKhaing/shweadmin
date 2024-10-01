@@ -9,6 +9,10 @@
 
     <div v-if="news" class="details-form">
       <form @submit.prevent="updateNews">
+        <div class="form-group">
+          <label>Title:</label>
+          <input v-model="news.title" required />
+        </div>
         <!-- Images Display -->
         <div class="form-group">
           <label>Image Preview:</label>
@@ -122,11 +126,12 @@ export default {
         );
 
         const response = await updateNews(id, formData);
-
+      console.log('response.status',response.status)
         // Check the response status
         if (response.status === 200) {
-          this.success = response.data; // Show success message
-          this.$router.push({ name: 'news-list' }); // Correct route name
+          this.success = response.data; 
+          this.$router.push({ name: 'newsList' })
+
         } else {
           this.error = response.data; // Show the error message returned from backend
         }
@@ -160,12 +165,7 @@ export default {
   margin-bottom: 5px;
 }
 
-.form-group input[type='text'],
-.form-group textarea {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-}
+
 
 .image-gallery {
   display: flex;

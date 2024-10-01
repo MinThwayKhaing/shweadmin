@@ -1,19 +1,28 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="car-rent-create">
-    <h1>Create New Car Rent</h1>
+  <div class="car-rent-details">
+    <h1>Car Rent Details</h1>
 
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="success" class="success">{{ success }}</div>
 
-    <div class="details-form">
-      <form @submit.prevent="createCarRent">
+    <div v-if="carRent" class="details-form">
+      <form @submit.prevent="updateCarRent">
+        <!-- Image Display -->
+        <div class="form-group">
+          <label>Image Preview:</label>
+          <img
+            :src="imagePreview || carRent.image || 'https://example.com/default-car-image.jpg'"
+            alt="Car Image"
+            class="car-image"
+          />
+        </div>
+
         <!-- Image Upload -->
         <div class="form-group">
-          <label>Upload Car Image:</label>
+          <label>Upload New Image:</label>
           <input type="file" @change="handleImageUpload" />
-          <img v-if="imagePreview" :src="imagePreview" alt="Car Image" class="car-image" />
         </div>
 
         <div class="form-group">
@@ -60,55 +69,57 @@
           <label>Car Color:</label>
           <input v-model="carRent.carColor" type="text" required />
         </div>
+
         <div class="form-group">
           <label>Car Type:</label>
-          <div class="radio-group">
-            <label v-for="option in carTypeOptions" :key="option" class="radio-label">
-              <input type="radio" v-model="carRent.carType" :value="option" required />
-              {{ option }}
-            </label>
-          </div>
+          <input v-model="carRent.carType" type="number" required />
         </div>
 
-        <button type="submit">Create Car Rent</button>
+        <button type="submit">Update Car Rent</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { saveCarRent } from '../../../services/carRentService'
+import { getCarById, updateCarRent } from '../../../services/carRentService'
 
 export default {
   data() {
     return {
-      carRent: {
-        carName: '',
-        ownerName: '',
-        carNo: '',
-        status: false,
-        license: '',
-        review: '',
-        driverName: '',
-        driverPhoneNumber: '',
-        carColor: '',
-        carType: null
-      },
-      carTypeOptions: [2, 4, 6, 7,8, 9, 11],
-      image: null, // To hold the uploaded car image
-      imagePreview: null, // To hold the car image preview URL
+      carRent: null,
+      image: null, // To hold the uploaded image
+      imagePreview: null, // To hold the image preview URL
       loading: false,
       error: null,
       success: null // To hold the success message
     }
   },
+  created() {
+    this.loadCarRentDetails()
+  },
   methods: {
+    async loadCarRentDetails() {
+      const { id } = this.$route.params
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await getCarById(id)
+        this.carRent = response.data
+      } catch (err) {
+        this.error = 'Failed to load car rent details.'
+      } finally {
+        this.loading = false
+      }
+    },
     handleImageUpload(event) {
       const file = event.target.files[0]
       this.image = file
       this.imagePreview = URL.createObjectURL(file)
     },
-    async createCarRent() {
+    async updateCarRent() {
+      const { id } = this.$route.params
       this.loading = true
       this.error = null
       this.success = null
@@ -117,21 +128,22 @@ export default {
         const formData = new FormData()
         formData.append('image', this.image)
         formData.append(
-          'dto',
+          'request',
           new Blob([JSON.stringify(this.carRent)], { type: 'application/json' })
         )
 
-        const response = await saveCarRent(formData)
+        const response = await updateCarRent(id, formData)
 
+        // Check the response status
         if (response.status === 200) {
           this.success = response.data // Show success message
-          this.$router.push({ name: 'car-rent-list' }) // Redirect to list
+          this.$router.push({ name: 'car-rent-list' }) // Correct route name
         } else {
           this.error = response.data // Show the error message returned from backend
         }
       } catch (err) {
         console.log('error:', err)
-        this.error = 'Failed to create car rent.'
+        this.error = 'Failed to update car rent details.'
       } finally {
         this.loading = false
       }
@@ -141,7 +153,7 @@ export default {
 </script>
 
 <style scoped>
-.car-rent-create {
+.car-rent-details {
   padding: 20px;
 }
 
@@ -157,22 +169,20 @@ export default {
   display: block;
   margin-bottom: 5px;
 }
-.radio-group {
-  display: flex;
-  flex-wrap: wrap;
+
+.form-group input[type='text'],
+.form-group input[type='number'] {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
-.radio-label {
-  margin-right: 10px; /* Adds some spacing between the radio buttons */
-  display: flex;
-  align-items: center;
-}
 .car-image {
   width: 120px;
   height: 120px;
   border-radius: 16px;
   object-fit: cover;
-  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .loading {

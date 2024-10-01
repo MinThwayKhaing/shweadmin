@@ -4,20 +4,29 @@
   
       <form @submit.prevent="createNews">
         <div class="form-group">
+          <label>News Title:</label>
+          <input v-model="news.title" placeholder="News Title" required/>
+        </div>
+
+        <div class="form-group">
           <label>News Description:</label>
           <textarea v-model="news.description" placeholder="News Description" required></textarea>
         </div>
   
         <div class="form-group">
-          <label>Upload Images:</label>
-          <input type="file" @change="handleFilesChange" multiple />
-          <ul class="file-list">
-            <li v-for="(file, index) in files" :key="index" class="file-item">
-              {{ file.name }}
-              <button type="button" @click="removeFile(index)" class="remove-file">×</button>
-            </li>
-          </ul>
-        </div>
+  <label>Upload Images:</label>
+  <button type="button" class="custom-file-upload" @click="$refs.fileInput.click()">
+    Choose Files
+  </button>
+  <input type="file" ref="fileInput" @change="handleFilesChange" multiple />
+  <ul class="file-list">
+    <li v-for="(file, index) in files" :key="index" class="file-item">
+      {{ file.name }}
+      <button type="button" @click="removeFile(index)" class="remove-file">×</button>
+    </li>
+  </ul>
+</div>
+
   
         <button type="submit">Create News</button>
       </form>
@@ -35,6 +44,7 @@
     data() {
       return {
         news: {
+          title: '',
           description: '',
         },
         files: [],
@@ -125,9 +135,7 @@
     cursor: pointer;
   }
   
-  button {
-    margin-top: 10px;
-  }
+
   
   .loading {
     text-align: center;
@@ -145,5 +153,9 @@
     text-align: center;
     font-weight: bold;
   }
+  input[type="file"] {
+  display: none; /* Hide the default file input */
+}
+
   </style>
   

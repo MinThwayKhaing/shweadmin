@@ -6,7 +6,7 @@
       <!-- Include the sidebar navigation -->
     
     
-      <div class="w-screen overflow-x-hidden">
+      <div class="template w-screen overflow-x-hidden">
         <router-view />
         <!-- This is where the main content of each page will be rendered -->
       </div>

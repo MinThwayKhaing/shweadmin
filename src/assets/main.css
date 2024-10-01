@@ -50,3 +50,169 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.translators-list {
+  padding: 20px;
+}
+
+.search-box {
+  margin-bottom: 20px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.pagination-controls {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: #fff;
+  
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #ddd;
+  
+}
+
+.styled-table th {
+  background-color: #a16207;
+  color:#fef9c3;
+  font-weight: bold;
+}
+
+.styled-table tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #fef9c3;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #ca8a04;
+  cursor: pointer;
+}
+.pagination-controls label {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-controls input {
+  width: 60px;
+  padding: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+button {
+  margin-right: 10px;
+}
+
+.loading {
+  text-align: center;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+}
+
+.form-group textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.form-group
+{
+  display: flex;
+  gap: 8px;
+}
+.form-group input,select
+{
+  width: 300px;
+  height: 40px;
+  border: 1px solid #696969;
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.form-group input[type='file']{
+  width:20%;
+  height: 50px;
+  padding: 8px;
+  box-sizing: border-box;
+  
+}
+input[type='radio']{
+  width: auto;
+  height: auto;
+  padding: 8px;
+  box-sizing: border-box;
+  
+}
+input[type='checkbox']{
+  width: auto;
+  height: auto;
+  padding: 8px;
+  box-sizing: border-box;
+  
+}
+h1{
+  font-weight: 700;
+  font-size: large;
+  color: black;
+}
+.form-group label
+{
+  
+  min-width: 180px;
+  max-width: 200px;
+
+}
+button {
+  height: 40px;
+  width: 120px;
+  padding: 8px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 179 8 / var(--tw-bg-opacity));
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  border-radius: 0.375rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity));
+  margin-top: 10px;
+}
+.template > div
+{
+  padding: 16px;
+}

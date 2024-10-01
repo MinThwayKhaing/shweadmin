@@ -14,9 +14,10 @@
         </label>
       </div>
   
-      <table>
+      <table class="styled-table">
         <thead>
           <tr>
+            <th>Title</th>
             <th>Description</th>
             <th>Created Date</th>
             <th>Actions</th>
@@ -24,11 +25,12 @@
         </thead>
         <tbody>
           <tr v-for="newsItem in newsList" :key="newsItem.id">
-            <td>{{ newsItem.description }}</td>
+            <td>{{ newsItem.title }}</td>
+            <td>{{ truncateDescription(newsItem.description, 100) }}</td>
             <td>{{ formatDate(newsItem.createdDate) }}</td>
             <td>
-              <button @click="editNews(newsItem.id)">Edit</button>
-              <button @click="deleteNews(newsItem.id)">Delete</button>
+              <button  class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click="editNews(newsItem.id)">Edit</button>
+              <button  class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out" @click="deleteNews(newsItem.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -58,6 +60,12 @@
       this.loadNews();
     },
     methods: {
+      truncateDescription(description, maxLength = 100) {
+    if (description.length > maxLength) {
+      return description.substring(0, maxLength) + '...';
+    }
+    return description;
+  },
     async loadNews() {
     this.loading = true;
     this.error = null;
