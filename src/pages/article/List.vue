@@ -1,4 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+ 
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="articles-list">
     <h1>Articles List</h1>
@@ -8,27 +10,29 @@
       v-model="searchString"
       placeholder="Search Articles..."
       @input="loadArticles"
-      class="search-box"
+      class="search-box w-full max-w-md mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
     />
 
     <!-- Pagination Controls -->
-    <div class="pagination-controls">
+    <div class="mb-5 flex gap-5">
       <label>
         Page:
-        <input type="number" v-model.number="page" @change="loadArticles" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="page" @change="loadArticles" />
       </label>
       <label>
         Page Size:
-        <input type="number" v-model.number="size" @change="loadArticles" />
+        <input class="w-16 mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition duration-150 ease-in-out"
+         type="number" v-model.number="size" @change="loadArticles" />
       </label>
     </div>
 
-    <table class="styled-table">
+    <section class="detailed-section">
+    <table class="article-table">
       <thead>
         <tr>
           <th>Title</th>
           <th>Description</th>
-          <th>Image</th>
           <th>Activity</th>
           <th>Actions</th>
         </tr>
@@ -37,21 +41,21 @@
         <tr v-for="article in articles" :key="article.id">
           <td>{{ article.title }}</td>
           <td>{{ article.description }}</td>
+          <td>{{ article.name }}</td>
           <td>
-            <img :src="article.imageUrl" alt="Article Image" class="article-image" />
-          </td>
-          <td>{{ article.activity.name }}</td>
-          <td>
+            <div class='action-buttons'>
             <button 
-              class="px-4 py-2 bg-orange-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
+              class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl"
               @click="viewDetails(article.id)">View Details</button>
             <button 
-              class="px-4 py-2 bg-red-500 text-white rounded-lg border border-transparent shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
+              class="action-btn cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl"
               @click="deleteArticle(article.id)">Delete</button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
+  </section>
 
     <div v-if="loading" class="loading">Loading...</div>
     <div v-if="error" class="error">{{ error }}</div>
@@ -59,14 +63,14 @@
 </template>
 
 <script>
-import { fetchArticles,deleteArticleService } from '../../../services/articlesService';
+import { fetchArticles, deleteArticleService } from '../../../services/articlesService';
 
 export default {
   data() {
     return {
       articles: [], // List of articles
       searchString: '', // Search string for filtering
-      page: 1, // Current page
+      page: 0, // Current page, starting from 0 for backend pagination
       size: 10, // Page size
       loading: false,
       error: null
@@ -81,24 +85,21 @@ export default {
       this.error = null;
 
       try {
-        this.articles = await fetchArticles(this.searchString, this.page, this.size); // Fetch articles from service
-        console.log(' this.articles', this.articles)
+        const response = await fetchArticles(this.searchString, this.page, this.size); // Fetch articles from service
+        this.articles = response; // Set the articles state
       } catch (err) {
         this.error = err.message; // Capture error message
-        console.log(err.message);
       } finally {
         this.loading = false; // Stop loading
       }
     },
     viewDetails(articleId) {
-      console.log("Navigating with articleId: ", articleId);
       this.$router.push({ name: 'article-details', params: { id: articleId } }); // Navigate to article details
     },
     async deleteArticle(articleId) {
       const confirmed = confirm('Do you want to delete this article?');
       if (confirmed) {
         try {
-          // Call delete service for the article here
           await deleteArticleService(articleId); // Implement this service to delete the article
           this.loadArticles(); // Refresh the list after deletion
         } catch (err) {
@@ -128,12 +129,14 @@ export default {
   gap: 20px;
 }
 
-.styled-table {
+
+.article-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  background-color: #fff;
+  margin-top: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the rounded corners */
 }
 
 .styled-table th,
@@ -167,6 +170,10 @@ export default {
   height: auto; /* Maintain aspect ratio */
 }
 
+.detailed-section {
+  text-align: center; /* Center align the section content */
+}
+
 .loading {
   text-align: center;
   font-weight: bold;
@@ -177,4 +184,11 @@ export default {
   text-align: center;
   font-weight: bold;
 }
+
+.action-buttons {
+  display: flex; /* Use flexbox to align items */
+  justify-content: center; /* Center the buttons */
+  gap: 10px; /* Add some space between buttons */
+}
+
 </style>

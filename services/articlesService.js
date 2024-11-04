@@ -10,7 +10,7 @@ export async function updateCarOrder(sysKey, formData) {
   })
 }
 
-export async function fetchActiities(searchString, page, size) {
+export async function fetchActivities(searchString, page, size) {
   try {
     const token = sessionStorage.getItem('authToken')
     // Check if the token exists before making the request
