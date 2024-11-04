@@ -25,7 +25,10 @@
           <label class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
           <input v-model="translator.name" type="text" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" />
         </div>
-
+        <div class="form-group mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number:</label>
+          <input v-model="translator.phoneNumber" type="text" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl" />
+        </div>
         <div class="form-group mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">Language:</label>
           <select v-model="translator.language" required class="cursor-pointer p-2 rounded-lg mb-1 bg-gradient-to-r from-yellow-600 via-yellow-400 to-yellow-600 text-yellow-950 font-semibold shadow-xl">

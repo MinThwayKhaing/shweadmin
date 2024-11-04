@@ -89,7 +89,7 @@ export async function saveTranslator(formData) {
       }
     })
 
-    return response.data // Return the saved translator response
+    return response // Return the saved translator response
   } catch (err) {
     console.error('Failed to save translator:', err)
     throw new Error(err.response?.data?.message || 'Failed to save translator')
@@ -167,15 +167,15 @@ export async function deleteTranslator(translatorId) {
 // }
 
 export async function getTranslatorById(id) {
-  
-    const token = sessionStorage.getItem('authToken'); 
+  const token = sessionStorage.getItem('authToken')
+  try {
     return await axios.get(`${config.baseurl}translator/getTranslatorById/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    });
-    
-
-  
+    })
+  } catch (error) {
+    console.error('Failed to detail translator:', error)
+    throw new Error(error.response?.data?.message || 'Failed to detail translator')
+  }
 }
-
