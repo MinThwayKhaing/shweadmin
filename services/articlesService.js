@@ -52,7 +52,7 @@ export async function fetchArticles(searchString, page, size) {
       throw new Error('Authentication token is missing. Please log in.')
     }
 
-    const response = await axios.get(`${config.baseurl}articles`, {
+    const response = await axios.get(`${config.baseurl}articles/select`, {
       headers: {
         Authorization: `Bearer ${token}`
       },
